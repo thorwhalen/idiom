@@ -10,6 +10,19 @@ from sklearn.exceptions import NotFittedError
 from py2store.slib.s_zipfile import FileStreamsOfZip
 from py2store.base import Stream
 
+english_word2vec_url = 'https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M-subword.vec.zip'
+
+
+def get_english_word2vec_zip_filepath():
+    from graze import Graze
+    g = Graze()
+    if english_word2vec_url not in g:
+        print(f"Downloading {english_word2vec_url} and storing it locally (in {g.filepath_of(english_word2vec_url)})")
+
+    zip_filepath = g.filepath_of(english_word2vec_url)
+
+    return zip_filepath
+
 
 def line_to_raw_word_vec(line):
     word, vec = line.split(maxsplit=1)
@@ -226,15 +239,17 @@ class SearchOld:
     tokenizer = re.compile('\w+').findall
 
     def __init__(self,
-                 wordvec_zip_filepath,
-                 search_words,
+                 wordvec_zip_filepath=None,
+                 search_words=None,
                  wordvec_name_in_zip='wiki-news-300d-1M-subword.vec',
                  n_neighbors=37,
                  verbose=False
                  ):
-        self.wordvec_zip_filepath = wordvec_zip_filepath
+        self.wordvec_zip_filepath = wordvec_zip_filepath or get_english_word2vec_zip_filepath()
         self.wordvec_name_in_zip = wordvec_name_in_zip
-        self.search_words = set(search_words)
+        if search_words:
+            search_words = set(search_words)
+        self.search_words = search_words
         self.n_neighbors = n_neighbors
         self.verbose = verbose
 
@@ -251,7 +266,7 @@ class SearchOld:
         return all_wordvecs
 
     def filtered_wordvecs(self, tok_filt):
-        with self.stream['wiki-news-300d-1M-subword.vec'] as fp:
+        with self.stream[self.wordvec_name_in_zip] as fp:
             yield from filter(lambda x: tok_filt(x[0]), word_and_vecs(fp))
 
     def vec_matrix(self, words):
@@ -270,11 +285,11 @@ class SearchOld:
 
     @cached_property
     def knn(self):
-        taget_wv = dict(self.filtered_wordvecs(lambda x: x in self.search_words))
-        X = np.array(list(taget_wv.values()))
+        target_wv = dict(self.filtered_wordvecs(lambda x: x in self.search_words))
+        X = np.array(list(target_wv.values()))
 
         knn = NearestNeighbors(n_neighbors=self.n_neighbors, metric='cosine').fit(X)
-        knn.words = np.array(list(taget_wv.keys()))
+        knn.words = np.array(list(target_wv.keys()))
         return knn
 
     def search(self, query):
