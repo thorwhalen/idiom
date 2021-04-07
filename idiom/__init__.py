@@ -1,16 +1,40 @@
-from functools import cached_property
+from functools import cached_property, partial, lru_cache
 import re
 from typing import Mapping, Any, Callable, Union, Iterable, Optional
+from importlib_resources import files as package_files
+from dataclasses import dataclass, field
+from itertools import islice
+from operator import itemgetter
 
 import numpy as np
 from sklearn.metrics.pairwise import cosine_distances
 from sklearn.neighbors import NearestNeighbors
 from sklearn.exceptions import NotFittedError
 
-from py2store.slib.s_zipfile import FileStreamsOfZip
-from py2store.base import Stream
+from py2store import Store
+from py2store.slib.s_zipfile import FileStreamsOfZip, FilesOfZip
+# from py2store.base import Stream
+
+from creek import Creek
+from creek.util import PreIter
+
+data_files = package_files('idiom.data')
 
 english_word2vec_url = 'https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M-subword.vec.zip'
+word_frequency_posixpath = data_files.joinpath('english-word-frequency.zip')
+
+from io import BytesIO
+import pandas as pd
+
+
+@lru_cache(maxsize=1)
+def most_frequent_words(max_n_words=100_000):
+    """The set of most frequent words.
+    Note: Twice faster than using FilesOfZip and pandas.read_csv
+    """
+    z = FileStreamsOfZip(str(word_frequency_posixpath))
+    with z['unigram_freq.csv'] as zz:
+        return set([x.decode().split(',')[0] for x in islice(zz, 0, max_n_words)])
 
 
 def get_english_word2vec_zip_filepath():
@@ -24,25 +48,49 @@ def get_english_word2vec_zip_filepath():
     return zip_filepath
 
 
-def line_to_raw_word_vec(line):
+def line_to_raw_word_vec(line, encoding='utf-8', errors='strict'):
     word, vec = line.split(maxsplit=1)
-    return word.decode(), vec
+    return word.decode(encoding, errors), vec
 
 
-class WordVecStream(Stream):
-    _obj_of_data = line_to_raw_word_vec
+skip_one_item = partial(PreIter().skip_items, n=1)
 
 
-class StreamsOfZip(FileStreamsOfZip):
-    def _obj_of_data(self, data):
-        return line_to_raw_word_vec(data)
+class WordRawVecCreek(Creek):
+    pre_iter = staticmethod(skip_one_item)
+    data_to_obj = staticmethod(line_to_raw_word_vec)
+
+
+class WordVecCreek(Creek):
+    def __init__(self, stream, word_filt=None):
+        super().__init__(stream)
+        if not callable(word_filt):
+            word_filt = partial(filter, word_filt)
+        self.word_filt = word_filt
+
+    def pre_iter(self, stream):
+        next(stream)  # consume the first line (it's a header)
+        return filter(lambda wv: self.word_filt(wv[0]),
+                      map(line_to_raw_word_vec, stream))  # split word and vec
+
+    data_to_obj = staticmethod(lambda wv: (wv[0], np.fromstring(wv[1], sep=' ')))
+
+
+class WordVecsOfZip(Store.wrap(FileStreamsOfZip)):
+    _obj_of_data = staticmethod(WordVecCreek)
+
+
+def english_word2vec_stream(word_filt=None, zip_filepath=None, key='wiki-news-300d-1M-subword.vec'):
+    zip_filepath = zip_filepath or get_english_word2vec_zip_filepath()
+    lines_of_zip = FileStreamsOfZip(zip_filepath)[key]
+    return WordVecCreek(lines_of_zip, word_filt)
 
 
 def word_and_vecs(fp):
     #     fin = io.open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
 
     # consume the first line (n_lines, n_dims) not yielded
-    n_lines, n_dims = map(int, fp.readline().decode().split())
+    # n_lines, n_dims = map(int, fp.readline().decode().split())
     for line in fp:
         tok, *vec = line.decode().rstrip().split(' ')
         yield tok, tuple(map(float, vec))
@@ -94,10 +142,14 @@ def cosine(x, y):
     return cosine_distances([x], [y])[0][0]
 
 
-from py2store import Store
+@lru_cache(maxsize=1)
+def vec_of_word_default_factory():
+    words = most_frequent_words()
+    return dict(english_word2vec_stream(word_filt=words.__contains__))
 
 
-class WordVec:
+@dataclass
+class WordVec(Mapping):
     """
 
     Terms:
@@ -117,17 +169,11 @@ class WordVec:
     ```
 
     """
+    vec_of_word: WordVecStore = field(default_factory=vec_of_word_default_factory, repr=False)
+    tokenizer = r'[\w-]+'
 
-    def __init__(self,
-                 vec_of_word: WordVecStore,
-                 tokenizer=r'[\w-]+'):
-        """Provides  methods to computing a vectors from an arbitrary query, using tokenizer and vec_of_word mapping.
-
-        :param vec_of_word:
-        :param tokenizer:
-        """
-        self.vec_of_word = vec_of_word
-        self.tokenizer = mk_tokenizer(tokenizer)
+    def __post_init__(self):
+        self.tokenizer = mk_tokenizer(self.tokenizer)
 
     def dist(self, q1, q2):
         """Cosine distance between two queries (through their corresponding vectors)"""
@@ -169,6 +215,19 @@ class WordVec:
 
     __call__ = query_to_vec
 
+    # TODO: Replace with "explicit" decorator
+    def __getitem__(self, k):
+        return self.vec_of_word[k]
+
+    def __len__(self):
+        return len(self.vec_of_word)
+
+    def __contains__(self, k):
+        return k in self.vec_of_word
+
+    def __iter__(self):
+        return iter(self.vec_of_word)
+
 
 Corpus = Optional[Union[Mapping, Iterable]]
 
@@ -177,7 +236,8 @@ class WordVecSearch:
     corpus_ = None
     corpus_keys_array_ = None
 
-    def __init__(self, word_vec: WordVec, n_neighbors=10, **knn_kwargs):
+    def __init__(self, word_vec: WordVec = None, n_neighbors=10, **knn_kwargs):
+        word_vec = word_vec or WordVec()
         self.word_vec = word_vec
         knn_kwargs = dict(n_neighbors=n_neighbors, metric='cosine', **knn_kwargs)
         self.knn = NearestNeighbors(**knn_kwargs)
@@ -217,6 +277,12 @@ class WordVecSearch:
             return self.fit().search(query, include_dist)
 
     __call__ = search
+
+
+class StreamsOfZip(FileStreamsOfZip):
+
+    def _obj_of_data(self, data):
+        return line_to_raw_word_vec(data)
 
 
 class SearchOld:
