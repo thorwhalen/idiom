@@ -192,9 +192,10 @@ class WordVec(Mapping):
 
     def mean_vec(self, words):
         if len(words) > 0:
-            return np.mean(self.vec_matrix(words), axis=0)
-        else:
-            return self.global_mean
+            vectors = list(filter(lambda v: v is not None, self.vec_matrix(words)))
+            if len(vectors) > 0:
+                return np.mean(vectors, axis=0)
+        return self.global_mean  # if all else fails
 
     def query_2_words(self, query):
         return [tok for tok in self.tokenizer(query) if tok in self.vec_of_word]
