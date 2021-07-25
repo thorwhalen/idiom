@@ -13,15 +13,16 @@ from sklearn.exceptions import NotFittedError
 
 from py2store import Store
 from py2store.slib.s_zipfile import FileStreamsOfZip, FilesOfZip
+
 # from py2store.base import Stream
 
 from creek import Creek
 from creek.util import PreIter
 
-data_files = package_files('idiom.data')
+data_files = package_files("idiom.data")
 
-english_word2vec_url = 'https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M-subword.vec.zip'
-word_frequency_posixpath = data_files.joinpath('english-word-frequency.zip')
+english_word2vec_url = "https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M-subword.vec.zip"
+word_frequency_posixpath = data_files.joinpath("english-word-frequency.zip")
 
 from io import BytesIO
 import pandas as pd
@@ -33,22 +34,25 @@ def most_frequent_words(max_n_words=100_000):
     Note: Twice faster than using FilesOfZip and pandas.read_csv
     """
     z = FileStreamsOfZip(str(word_frequency_posixpath))
-    with z['unigram_freq.csv'] as zz:
-        return set([x.decode().split(',')[0] for x in islice(zz, 0, max_n_words)])
+    with z["unigram_freq.csv"] as zz:
+        return set([x.decode().split(",")[0] for x in islice(zz, 0, max_n_words)])
 
 
 def get_english_word2vec_zip_filepath():
     from graze import Graze
+
     g = Graze()
     if english_word2vec_url not in g:
-        print(f"Downloading {english_word2vec_url} and storing it locally (in {g.filepath_of(english_word2vec_url)})")
+        print(
+            f"Downloading {english_word2vec_url} and storing it locally (in {g.filepath_of(english_word2vec_url)})"
+        )
 
     zip_filepath = g.filepath_of(english_word2vec_url)
 
     return zip_filepath
 
 
-def line_to_raw_word_vec(line, encoding='utf-8', errors='strict'):
+def line_to_raw_word_vec(line, encoding="utf-8", errors="strict"):
     word, vec = line.split(maxsplit=1)
     return word.decode(encoding, errors), vec
 
@@ -70,17 +74,20 @@ class WordVecCreek(Creek):
 
     def pre_iter(self, stream):
         next(stream)  # consume the first line (it's a header)
-        return filter(lambda wv: self.word_filt(wv[0]),
-                      map(line_to_raw_word_vec, stream))  # split word and vec
+        return filter(
+            lambda wv: self.word_filt(wv[0]), map(line_to_raw_word_vec, stream)
+        )  # split word and vec
 
-    data_to_obj = staticmethod(lambda wv: (wv[0], np.fromstring(wv[1], sep=' ')))
+    data_to_obj = staticmethod(lambda wv: (wv[0], np.fromstring(wv[1], sep=" ")))
 
 
 class WordVecsOfZip(Store.wrap(FileStreamsOfZip)):
     _obj_of_data = staticmethod(WordVecCreek)
 
 
-def english_word2vec_stream(word_filt=None, zip_filepath=None, key='wiki-news-300d-1M-subword.vec'):
+def english_word2vec_stream(
+    word_filt=None, zip_filepath=None, key="wiki-news-300d-1M-subword.vec"
+):
     zip_filepath = zip_filepath or get_english_word2vec_zip_filepath()
     lines_of_zip = FileStreamsOfZip(zip_filepath)[key]
     return WordVecCreek(lines_of_zip, word_filt)
@@ -92,7 +99,7 @@ def word_and_vecs(fp):
     # consume the first line (n_lines, n_dims) not yielded
     # n_lines, n_dims = map(int, fp.readline().decode().split())
     for line in fp:
-        tok, *vec = line.decode().rstrip().split(' ')
+        tok, *vec = line.decode().rstrip().split(" ")
         yield tok, tuple(map(float, vec))
 
 
@@ -106,12 +113,14 @@ def mk_tokenizer(tokenizer):
     if isinstance(tokenizer_spec, (str, re.Pattern)):
         pattern = re.compile(tokenizer_spec)
 
-        def tokenizer(string: str): return pattern.findall(string)
+        def tokenizer(string: str):
+            return pattern.findall(string)
+
     return tokenizer
 
 
-alpha_num_p = re.compile(r'[\w-]+')
-letters_p = re.compile(r'[a-z]+')
+alpha_num_p = re.compile(r"[\w-]+")
+letters_p = re.compile(r"[a-z]+")
 
 
 #
@@ -169,8 +178,11 @@ class WordVec(Mapping):
     ```
 
     """
-    vec_of_word: WordVecStore = field(default_factory=vec_of_word_default_factory, repr=False)
-    tokenizer = r'[\w-]+'
+
+    vec_of_word: WordVecStore = field(
+        default_factory=vec_of_word_default_factory, repr=False
+    )
+    tokenizer = r"[\w-]+"
 
     def __post_init__(self):
         self.tokenizer = mk_tokenizer(self.tokenizer)
@@ -209,10 +221,12 @@ class WordVec(Mapping):
         return np.array([self.vec_of_word.get(w, None) for w in words])
 
     def __repr__(self):
-        tokenizer_name = getattr(self.tokenizer, '__name__', 'unnamed_tokenizer')
-        return f"{self.__class__.__name__}(" \
-               f"vec_of_word={type(self.vec_of_word).__name__} with {len(self.vec_of_word)} words, " \
-               f"tokenizer={tokenizer_name})"
+        tokenizer_name = getattr(self.tokenizer, "__name__", "unnamed_tokenizer")
+        return (
+            f"{self.__class__.__name__}("
+            f"vec_of_word={type(self.vec_of_word).__name__} with {len(self.vec_of_word)} words, "
+            f"tokenizer={tokenizer_name})"
+        )
 
     __call__ = query_to_vec
 
@@ -234,13 +248,23 @@ Corpus = Optional[Union[Mapping, Iterable]]
 
 
 class WordVecSearch:
+    """Make a search engine.
+    Trains on a corpus of vectors (or {word: vector,...} mapping
+    """
+
     corpus_ = None
     corpus_keys_array_ = None
 
     def __init__(self, word_vec: WordVec = None, n_neighbors=10, **knn_kwargs):
+        """
+
+        :param word_vec: A WordVec object that will
+        :param n_neighbors:
+        :param knn_kwargs:
+        """
         word_vec = word_vec or WordVec()
         self.word_vec = word_vec
-        knn_kwargs = dict(n_neighbors=n_neighbors, metric='cosine', **knn_kwargs)
+        knn_kwargs = dict(n_neighbors=n_neighbors, metric="cosine", **knn_kwargs)
         self.knn = NearestNeighbors(**knn_kwargs)
 
     def fit(self, corpus: Corpus = None):
@@ -274,14 +298,25 @@ class WordVecSearch:
                 return corpus_keys
             else:
                 return corpus_keys, r_dist
-        except NotFittedError:  # Note: Should we warn that we're defaulting?
-            return self.fit().search(query, include_dist)
+        except NotFittedError:
+            self._when_searched_on_unfit_instance()
+            self.search(query, include_dist)
+
+    def _when_searched_on_unfit_instance(self):
+        from warnings import warn
+
+        warn(
+            "The search object wasn't fitted yet, so I'm fitting it on the "
+            "wordvec data itself. "
+            "To avoid this message, do a .fit() before using the search "
+            "functionality."
+        )
+        return self.fit()
 
     __call__ = search
 
 
 class StreamsOfZip(FileStreamsOfZip):
-
     def _obj_of_data(self, data):
         return line_to_raw_word_vec(data)
 
@@ -303,16 +338,20 @@ class SearchOld:
     s.search('search for the right name')
     ```
     """
-    tokenizer = re.compile('\w+').findall
 
-    def __init__(self,
-                 wordvec_zip_filepath=None,
-                 search_words=None,
-                 wordvec_name_in_zip='wiki-news-300d-1M-subword.vec',
-                 n_neighbors=37,
-                 verbose=False
-                 ):
-        self.wordvec_zip_filepath = wordvec_zip_filepath or get_english_word2vec_zip_filepath()
+    tokenizer = re.compile(r"\w+").findall
+
+    def __init__(
+        self,
+        wordvec_zip_filepath=None,
+        search_words=None,
+        wordvec_name_in_zip="wiki-news-300d-1M-subword.vec",
+        n_neighbors=37,
+        verbose=False,
+    ):
+        self.wordvec_zip_filepath = (
+            wordvec_zip_filepath or get_english_word2vec_zip_filepath()
+        )
         self.wordvec_name_in_zip = wordvec_name_in_zip
         if search_words:
             search_words = set(search_words)
@@ -327,7 +366,7 @@ class SearchOld:
     @cached_property
     def wordvecs(self):
         if self.verbose:
-            print('Gathering all the word vecs. This could take a few minutes...')
+            print("Gathering all the word vecs. This could take a few minutes...")
         with self.stream[self.wordvec_name_in_zip] as fp:
             all_wordvecs = dict(word_and_vecs(fp))
         return all_wordvecs
@@ -355,7 +394,7 @@ class SearchOld:
         target_wv = dict(self.filtered_wordvecs(lambda x: x in self.search_words))
         X = np.array(list(target_wv.values()))
 
-        knn = NearestNeighbors(n_neighbors=self.n_neighbors, metric='cosine').fit(X)
+        knn = NearestNeighbors(n_neighbors=self.n_neighbors, metric="cosine").fit(X)
         knn.words = np.array(list(target_wv.keys()))
         return knn
 
