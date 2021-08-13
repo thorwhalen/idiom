@@ -1,10 +1,15 @@
+"""
+Access to wordvec data and useful functions that use it.
+"""
 from functools import cached_property, partial, lru_cache
 import re
 from typing import Mapping, Any, Callable, Union, Iterable, Optional
 from importlib_resources import files as package_files
 from dataclasses import dataclass, field
 from itertools import islice
-from operator import itemgetter
+from heapq import nlargest
+from typing import Iterable, Callable, Union, Optional
+
 
 import numpy as np
 from sklearn.metrics.pairwise import cosine_distances
@@ -21,11 +26,61 @@ from creek.util import PreIter
 
 data_files = package_files("idiom.data")
 
-english_word2vec_url = "https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M-subword.vec.zip"
+english_word2vec_url = (
+    "https://dl.fbaipublicfiles.com/fasttext/vectors-english/"
+    "wiki-news-300d-1M-subword.vec.zip"
+)
 word_frequency_posixpath = data_files.joinpath("english-word-frequency.zip")
 
-from io import BytesIO
-import pandas as pd
+
+def closest_words(
+    word, k=10, search_words: Optional[Union[Callable, Iterable]] = None, vec_of_word=None
+):
+    """Search words related to a give word.
+    Given a word, search for the `k` closest words to it from a search corpus
+    (which may just be the wordvec words filtered for specific patterns).
+
+    For example, find the closest 10 words to 'mad' that start with an L.
+
+    >>> starts_with_L = lambda x: x.startswith('l')
+    >>> closest_words('mad', k=10, search_words=starts_with_L)  # doctest: +SKIP
+    ['lunatic',
+     'loony',
+     'loather',
+     'loathesome',
+     'love-sick',
+     'loooove',
+     'lovestruck',
+     'lovesick',
+     'luddite',
+     'lazy-minded']
+
+    Recipe: To avoid errors when giving an explicit list, you may want to filter out
+    those words that wordvecs doesn't have:
+
+    ```
+    search_words = filter(lambda w: w in wordvecs, search_words)
+    ```
+
+    """
+    vec_of_word = get_vec_of_word(vec_of_word)
+    target_word_vector = vec_of_word[word]
+    if search_words is None:
+        search_words = vec_of_word  # everything we have in vec_of_word
+    elif isinstance(search_words, Callable):
+        words_filter_func = search_words
+        search_words = filter(words_filter_func, vec_of_word)
+    assert isinstance(search_words, Iterable), (
+        "search_words should None, an iterable or a filter " "function"
+    )
+
+    search_word_vectors = map(lambda k: (k, vec_of_word[k]), search_words)
+    return [
+        y[0]
+        for y in nlargest(
+            k, search_word_vectors, key=lambda x: -cosine(target_word_vector, x[1])
+        )
+    ]
 
 
 @lru_cache(maxsize=1)
@@ -44,7 +99,8 @@ def get_english_word2vec_zip_filepath():
     g = Graze()
     if english_word2vec_url not in g:
         print(
-            f"Downloading {english_word2vec_url} and storing it locally (in {g.filepath_of(english_word2vec_url)})"
+            f"Downloading {english_word2vec_url} and storing it locally "
+            f"(in {g.filepath_of(english_word2vec_url)})"
         )
 
     zip_filepath = g.filepath_of(english_word2vec_url)
@@ -155,6 +211,40 @@ def cosine(x, y):
 def vec_of_word_default_factory():
     words = most_frequent_words()
     return dict(english_word2vec_stream(word_filt=words.__contains__))
+
+
+@lru_cache(maxsize=1)
+def _get_vec_of_word(corpus):
+    if isinstance(corpus, str):
+        if corpus == "most_frequent_english":
+            words = most_frequent_words()
+            return dict(english_word2vec_stream(word_filt=words.__contains__))
+        elif corpus == "english_all":
+            dict(english_word2vec_stream())
+    raise ValueError(f"Unrecognized corpus value: {corpus}")
+
+
+DFLT_WORDVEC_CORPUS_NAME = "most_frequent_english"
+
+word_to_vec_corpus_aliases = {
+    "most_frequent_english": "most_frequent_english",
+    "most_frequent": "most_frequent_english",
+    "english_70982": "most_frequent_english",
+    "english_all": "english_all",
+    "english_999994": "english_all",
+}
+
+
+def get_vec_of_word(corpus=DFLT_WORDVEC_CORPUS_NAME):
+    """Get a word_2_vec dict given an alias name"""
+    if corpus is None:
+        corpus = DFLT_WORDVEC_CORPUS_NAME
+    if isinstance(corpus, str):
+        if corpus in {"most_frequent_english", "most_frequent", "english_70982"}:
+            _get_vec_of_word("most_frequent_english")
+        elif corpus in {"english_all", "english_999994"}:
+            _get_vec_of_word("most_frequent_english")
+    raise ValueError(f"Unrecognized corpus value: {corpus}")
 
 
 @dataclass
