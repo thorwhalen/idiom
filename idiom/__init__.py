@@ -100,6 +100,10 @@ def most_frequent_words(max_n_words=100_000):
         return set([x.decode().split(',')[0] for x in islice(zz, 0, max_n_words)])
 
 
+def _always_true(x):
+    return True
+
+
 def word_frequencies():
     """The set of most frequent words.
     Note: Twice faster than using FilesOfZip and pandas.read_csv
@@ -110,6 +114,50 @@ def word_frequencies():
         for row in zz:
             word, freq = row.strip().decode().split(',')
             yield word, int(freq)
+
+
+@lru_cache(maxsize=1)
+def word_count_df():
+    import pandas as pd
+
+    count = pd.DataFrame(
+        [{'word': word, 'count': count} for word, count in word_frequencies()]
+    )
+    return count.set_index('word')
+
+
+from functools import cached_property
+
+
+class _IDF:
+    _frequency_of_the = 0.06
+    _count_of_the = 23_135_851_162  # "the" count in word_count_df
+    _mean_words_in_a_doc = 5000
+    N = int((_count_of_the / _frequency_of_the) / _mean_words_in_a_doc)
+
+    @cached_property
+    def count(self):
+        return word_count_df()
+
+    @cached_property
+    def logarithmic(self):
+        """This formula is a commonly used variant of IDF in the TF-IDF approach.
+        The logarithmic term ensures that words with very high counts are not penalized
+        too heavily, while still giving a significant weight to words that occur in a
+        small subset of documents."""
+        return np.log(1 + self.N / (1 + self.count))
+
+
+idf = _IDF()
+
+
+"""
+Logarithmic IDF: factor[word] = log(N / (1 + count[word])), where N is the total number of documents in the corpus. This formula is a commonly used variant of IDF in the TF-IDF approach. The logarithmic term ensures that words with very high counts are not penalized too heavily, while still giving a significant weight to words that occur in a small subset of documents.
+Smoothed IDF: factor[word] = log((N + 1) / (1 + count[word])) + 1, where N is the total number of documents in the corpus. This formula is similar to the logarithmic IDF, but with a smoothing term of 1 added to the numerator and denominator. This helps to avoid division by zero when a word appears in all documents, and gives a non-zero weight to all words.
+Probabilistic IDF: factor[word] = log((N - count[word] + 0.5) / (count[word] + 0.5)), where N is the total number of documents in the corpus. This formula is a variant of IDF that takes into account the document frequency of a word, as well as the collection frequency. The term 0.5 is added to the numerator and denominator to avoid division by zero.
+Max IDF: factor[word] = log(N / max(count.values())) - log(1 + count[word]), where N is the total number of documents in the corpus. This formula gives a weight to words based on their inverse document frequency, with a term subtracted to penalize words that occur frequently in a single document. The denominator of the second logarithm ensures that words with zero counts are not penalized too heavily.
+
+"""
 
 
 def get_english_word2vec_zip_filepath():
@@ -511,3 +559,74 @@ class SearchOld:
         query_vec = self.query_to_vec(query)
         r_dist, r_idx = self.knn.kneighbors(query_vec.reshape(1, -1))
         return self.knn.words[r_idx]
+
+
+def get_singular(word: str) -> str:
+    return get_singular_w_inflect(word)
+
+
+def get_singular_w_inflect(word: str) -> str:
+    """Get the singular form of a word using inflect
+
+    See Also
+    --------
+
+    :func:`get_singular_w_nltk`, which creates plurals through a different method,
+    (a semantic approach). Once the data is loaded, nltk is faster than the inflect,
+    version, but gives less accurate results, since it's idea of singular is "the
+    base concept".
+
+    """
+    import inflect
+
+    p = inflect.engine()
+    singular = p.singular_noun(word)
+    if singular:
+        return singular
+    else:
+        return word
+
+
+def get_singular_w_nltk(word: str) -> str:
+    """Get the singular form of a word using nltk's wordnet
+
+    See Also
+    --------
+
+    :func:`get_singular_w_inflect`, which creates plurals through a different method,
+    (a rule-based approach). Once the data is loaded, nltk is faster than inflect,
+    but gives less accurate results, since it's idea of singular is "the base concept".
+
+    """
+    from nltk.corpus import wordnet
+
+    singular = word
+    synsets = wordnet.synsets(word, pos='n')
+    if synsets:
+        lemma = synsets[0].lemmas()[0]
+        singular = lemma.name()
+    return singular
+
+
+_uncommon_plurals_to_test_with = [
+    ('goose', 'geese'),
+    ('mouse', 'mice'),
+    ('tooth', 'teeth'),
+    ('foot', 'feet'),
+    ('child', 'children'),
+    ('person', 'people'),
+    ('man', 'men'),
+    ('woman', 'women'),
+    ('leaf', 'leaves'),
+    ('datum', 'data'),
+    ('cactus', 'cacti'),
+    ('focus', 'foci'),
+    ('fungus', 'fungi'),
+    ('syllabus', 'syllabi'),
+    ('thief', 'thieves'),
+    ('deer', 'deer'),
+    ('moose', 'moose'),
+    ('sheep', 'sheep'),
+    ('fish', 'fish'),
+    ('species', 'species'),
+]
