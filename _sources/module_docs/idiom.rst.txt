@@ -1,0 +1,4 @@
+idiom
+=====
+.. automodule:: idiom
+   :members:

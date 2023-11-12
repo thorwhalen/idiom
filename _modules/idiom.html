@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>idiom &mdash; idiom 0.0.4 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/toggleprompt.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            idiom
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../module_docs/idiom.html">idiom</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">idiom</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">idiom</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for idiom</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Access to wordvec data and useful functions that use it.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">partial</span><span class="p">,</span> <span class="n">lru_cache</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">importlib_resources</span> <span class="kn">import</span> <span class="n">files</span> <span class="k">as</span> <span class="n">package_files</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">nlargest</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_distances</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
+<span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="kn">import</span> <span class="n">NotFittedError</span>
+
+<span class="kn">from</span> <span class="nn">py2store</span> <span class="kn">import</span> <span class="n">Store</span>
+<span class="kn">from</span> <span class="nn">py2store.slib.s_zipfile</span> <span class="kn">import</span> <span class="n">FileStreamsOfZip</span><span class="p">,</span> <span class="n">FilesOfZip</span>
+
+<span class="c1"># from py2store.base import Stream</span>
+
+<span class="kn">from</span> <span class="nn">creek</span> <span class="kn">import</span> <span class="n">Creek</span>
+<span class="kn">from</span> <span class="nn">creek.util</span> <span class="kn">import</span> <span class="n">PreIter</span>
+
+<span class="n">data_files</span> <span class="o">=</span> <span class="n">package_files</span><span class="p">(</span><span class="s1">&#39;idiom.data&#39;</span><span class="p">)</span>
+
+<span class="n">english_word2vec_url</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;https://dl.fbaipublicfiles.com/fasttext/vectors-english/&#39;</span>
+    <span class="s1">&#39;wiki-news-300d-1M-subword.vec.zip&#39;</span>
+<span class="p">)</span>
+<span class="n">word_frequency_posixpath</span> <span class="o">=</span> <span class="n">data_files</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;english-word-frequency.zip&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="closest_words"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.closest_words">[docs]</a><span class="k">def</span> <span class="nf">closest_words</span><span class="p">(</span>
+    <span class="n">word</span><span class="p">,</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">search_words</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">vec_of_word</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search words related to a give word.</span>
+<span class="sd">    Given a word, search for the `k` closest words to it from a search corpus</span>
+<span class="sd">    (which may just be the wordvec words filtered for specific patterns).</span>
+
+<span class="sd">    For example, find the closest 10 words to &#39;mad&#39; that start with an L.</span>
+
+<span class="sd">    &gt;&gt;&gt; starts_with_L = lambda x: x.startswith(&#39;l&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; closest_words(&#39;mad&#39;, k=10, search_words=starts_with_L)  # doctest: +SKIP</span>
+<span class="sd">    [&#39;lunatic&#39;,</span>
+<span class="sd">     &#39;loony&#39;,</span>
+<span class="sd">     &#39;loather&#39;,</span>
+<span class="sd">     &#39;loathesome&#39;,</span>
+<span class="sd">     &#39;love-sick&#39;,</span>
+<span class="sd">     &#39;loooove&#39;,</span>
+<span class="sd">     &#39;lovestruck&#39;,</span>
+<span class="sd">     &#39;lovesick&#39;,</span>
+<span class="sd">     &#39;luddite&#39;,</span>
+<span class="sd">     &#39;lazy-minded&#39;]</span>
+
+<span class="sd">    Recipe: To avoid errors when giving an explicit list, you may want to filter out</span>
+<span class="sd">    those words that wordvecs doesn&#39;t have:</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    search_words = filter(lambda w: w in wordvecs, search_words)</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vec_of_word</span> <span class="o">=</span> <span class="n">get_vec_of_word</span><span class="p">(</span><span class="n">vec_of_word</span><span class="p">)</span>
+    <span class="n">target_word_vector</span> <span class="o">=</span> <span class="n">vec_of_word</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">search_words</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">search_words</span> <span class="o">=</span> <span class="n">vec_of_word</span>  <span class="c1"># everything we have in vec_of_word</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">search_words</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="n">words_filter_func</span> <span class="o">=</span> <span class="n">search_words</span>
+        <span class="n">search_words</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">words_filter_func</span><span class="p">,</span> <span class="n">vec_of_word</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">search_words</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">),</span> <span class="p">(</span>
+        <span class="s1">&#39;search_words should None, an iterable or a filter &#39;</span> <span class="s1">&#39;function&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">search_word_vectors</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">vec_of_word</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span> <span class="n">search_words</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">nlargest</span><span class="p">(</span>
+            <span class="n">k</span><span class="p">,</span> <span class="n">search_word_vectors</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">cosine</span><span class="p">(</span><span class="n">target_word_vector</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="p">)</span>
+    <span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">word_frequency_streams_of_zip</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">FileStreamsOfZip</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">word_frequency_posixpath</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="most_frequent_words"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.most_frequent_words">[docs]</a><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">most_frequent_words</span><span class="p">(</span><span class="n">max_n_words</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The list of most frequent words ordered by most frequent first.</span>
+<span class="sd">    Note: Twice faster than using FilesOfZip and pandas.read_csv</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">word_frequency_streams_of_zip</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">z</span><span class="p">[</span><span class="s1">&#39;unigram_freq.csv&#39;</span><span class="p">]</span> <span class="k">as</span> <span class="n">zz</span><span class="p">:</span>
+        <span class="c1"># note: skiping first line (header)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">islice</span><span class="p">(</span><span class="n">zz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_n_words</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="c1"># descend-sort this according the the work count (the values)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="most_frequent_words_set"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.most_frequent_words_set">[docs]</a><span class="k">def</span> <span class="nf">most_frequent_words_set</span><span class="p">(</span><span class="n">max_n_words</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The set of most frequent words.</span>
+<span class="sd">    Note: Twice faster than using FilesOfZip and pandas.read_csv</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">most_frequent_words</span><span class="p">(</span><span class="n">max_n_words</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_always_true</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<div class="viewcode-block" id="word_frequencies"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.word_frequencies">[docs]</a><span class="k">def</span> <span class="nf">word_frequencies</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The set of most frequent words.</span>
+<span class="sd">    Note: Twice faster than using FilesOfZip and pandas.read_csv</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">word_frequency_streams_of_zip</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">z</span><span class="p">[</span><span class="s1">&#39;unigram_freq.csv&#39;</span><span class="p">]</span> <span class="k">as</span> <span class="n">zz</span><span class="p">:</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">zz</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">zz</span><span class="p">:</span>
+            <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">word</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span></div>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">word_count_df</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">[{</span><span class="s1">&#39;word&#39;</span><span class="p">:</span> <span class="n">word</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">}</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">word_frequencies</span><span class="p">()]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">count</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">)</span>
+
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+
+<span class="k">class</span> <span class="nc">_IDF</span><span class="p">:</span>
+    <span class="n">_frequency_of_the</span> <span class="o">=</span> <span class="mf">0.06</span>
+    <span class="n">_count_of_the</span> <span class="o">=</span> <span class="mi">23_135_851_162</span>  <span class="c1"># &quot;the&quot; count in word_count_df</span>
+    <span class="n">_mean_words_in_a_doc</span> <span class="o">=</span> <span class="mi">5000</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">_count_of_the</span> <span class="o">/</span> <span class="n">_frequency_of_the</span><span class="p">)</span> <span class="o">/</span> <span class="n">_mean_words_in_a_doc</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">word_count_df</span><span class="p">()</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">logarithmic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This formula is a commonly used variant of IDF in the TF-IDF approach.</span>
+<span class="sd">        The logarithmic term ensures that words with very high counts are not penalized</span>
+<span class="sd">        too heavily, while still giving a significant weight to words that occur in a</span>
+<span class="sd">        small subset of documents.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">))</span>
+
+
+<span class="n">idf</span> <span class="o">=</span> <span class="n">_IDF</span><span class="p">()</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Logarithmic IDF: factor[word] = log(N / (1 + count[word])), where N is the total number of documents in the corpus. This formula is a commonly used variant of IDF in the TF-IDF approach. The logarithmic term ensures that words with very high counts are not penalized too heavily, while still giving a significant weight to words that occur in a small subset of documents.</span>
+<span class="sd">Smoothed IDF: factor[word] = log((N + 1) / (1 + count[word])) + 1, where N is the total number of documents in the corpus. This formula is similar to the logarithmic IDF, but with a smoothing term of 1 added to the numerator and denominator. This helps to avoid division by zero when a word appears in all documents, and gives a non-zero weight to all words.</span>
+<span class="sd">Probabilistic IDF: factor[word] = log((N - count[word] + 0.5) / (count[word] + 0.5)), where N is the total number of documents in the corpus. This formula is a variant of IDF that takes into account the document frequency of a word, as well as the collection frequency. The term 0.5 is added to the numerator and denominator to avoid division by zero.</span>
+<span class="sd">Max IDF: factor[word] = log(N / max(count.values())) - log(1 + count[word]), where N is the total number of documents in the corpus. This formula gives a weight to words based on their inverse document frequency, with a term subtracted to penalize words that occur frequently in a single document. The denominator of the second logarithm ensures that words with zero counts are not penalized too heavily.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">get_english_word2vec_zip_filepath</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">graze</span> <span class="kn">import</span> <span class="n">Graze</span>
+
+    <span class="n">g</span> <span class="o">=</span> <span class="n">Graze</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">english_word2vec_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Downloading </span><span class="si">{</span><span class="n">english_word2vec_url</span><span class="si">}</span><span class="s1"> and storing it locally &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;(in </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">filepath_of</span><span class="p">(</span><span class="n">english_word2vec_url</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="p">)</span>
+
+    <span class="n">zip_filepath</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">filepath_of</span><span class="p">(</span><span class="n">english_word2vec_url</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">zip_filepath</span>
+
+
+<span class="k">def</span> <span class="nf">line_to_raw_word_vec</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;strict&#39;</span><span class="p">):</span>
+    <span class="n">word</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">word</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="p">),</span> <span class="n">vec</span>
+
+
+<span class="n">skip_one_item</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">PreIter</span><span class="p">()</span><span class="o">.</span><span class="n">skip_items</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WordRawVecCreek"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordRawVecCreek">[docs]</a><span class="k">class</span> <span class="nc">WordRawVecCreek</span><span class="p">(</span><span class="n">Creek</span><span class="p">):</span>
+    <span class="n">pre_iter</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">skip_one_item</span><span class="p">)</span>
+    <span class="n">data_to_obj</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">line_to_raw_word_vec</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WordVecCreek"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordVecCreek">[docs]</a><span class="k">class</span> <span class="nc">WordVecCreek</span><span class="p">(</span><span class="n">Creek</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">word_filt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">word_filt</span><span class="p">):</span>
+            <span class="n">word_filt</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">word_filt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">word_filt</span> <span class="o">=</span> <span class="n">word_filt</span>
+
+    <span class="k">def</span> <span class="nf">pre_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>  <span class="c1"># consume the first line (it&#39;s a header)</span>
+        <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">wv</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_filt</span><span class="p">(</span><span class="n">wv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">map</span><span class="p">(</span><span class="n">line_to_raw_word_vec</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># split word and vec</span>
+
+    <span class="n">data_to_obj</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="k">lambda</span> <span class="n">wv</span><span class="p">:</span> <span class="p">(</span><span class="n">wv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">wv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="WordVecsOfZip"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordVecsOfZip">[docs]</a><span class="k">class</span> <span class="nc">WordVecsOfZip</span><span class="p">(</span><span class="n">Store</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">FileStreamsOfZip</span><span class="p">)):</span>
+    <span class="n">_obj_of_data</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">WordVecCreek</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">english_word2vec_stream</span><span class="p">(</span>
+    <span class="n">word_filt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zip_filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;wiki-news-300d-1M-subword.vec&#39;</span>
+<span class="p">):</span>
+    <span class="n">zip_filepath</span> <span class="o">=</span> <span class="n">zip_filepath</span> <span class="ow">or</span> <span class="n">get_english_word2vec_zip_filepath</span><span class="p">()</span>
+    <span class="n">lines_of_zip</span> <span class="o">=</span> <span class="n">FileStreamsOfZip</span><span class="p">(</span><span class="n">zip_filepath</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">WordVecCreek</span><span class="p">(</span><span class="n">lines_of_zip</span><span class="p">,</span> <span class="n">word_filt</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">word_and_vecs</span><span class="p">(</span><span class="n">fp</span><span class="p">):</span>
+    <span class="c1">#     fin = io.open(fname, &#39;r&#39;, encoding=&#39;utf-8&#39;, newline=&#39;\n&#39;, errors=&#39;ignore&#39;)</span>
+
+    <span class="c1"># consume the first line (n_lines, n_dims) not yielded</span>
+    <span class="c1"># n_lines, n_dims = map(int, fp.readline().decode().split())</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">tok</span><span class="p">,</span> <span class="o">*</span><span class="n">vec</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">tok</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">vec</span><span class="p">))</span>
+
+
+<span class="n">Vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+<span class="n">VecStore</span> <span class="o">=</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Vec</span><span class="p">]</span>
+<span class="n">WordVecStore</span> <span class="o">=</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Vec</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">mk_tokenizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">):</span>
+    <span class="n">tokenizer_spec</span> <span class="o">=</span> <span class="n">tokenizer</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tokenizer_spec</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">)):</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">tokenizer_spec</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span>
+
+
+<span class="n">alpha_num_p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\w-]+&#39;</span><span class="p">)</span>
+<span class="n">letters_p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[a-z]+&#39;</span><span class="p">)</span>
+
+
+<span class="c1">#</span>
+<span class="c1"># def keys_and_vals_of_coll(coll):</span>
+<span class="c1">#     if isinstance(coll, Mapping):</span>
+<span class="c1">#         return zip(*coll.items())</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         return zip(*enumerate(coll))</span>
+
+<span class="c1"># class FakeMapping:</span>
+<span class="c1">#     def __init__(self, coll):</span>
+<span class="c1">#         self.coll = coll</span>
+<span class="c1">#</span>
+<span class="c1">#     def values(self):</span>
+<span class="c1">#         if isinstance(coll, Mapping):</span>
+<span class="c1">#             return coll.items()</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             return enumerate(coll)</span>
+<span class="c1">#</span>
+<span class="c1">#     def keys(self):</span>
+<span class="c1">#         if isinstance(coll, Mapping):</span>
+<span class="c1">#             return coll.items()</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             return enumerate(coll)</span>
+
+
+<span class="k">def</span> <span class="nf">cosine</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cosine_distances</span><span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">y</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">vec_of_word_default_factory</span><span class="p">():</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">most_frequent_words</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">english_word2vec_stream</span><span class="p">(</span><span class="n">word_filt</span><span class="o">=</span><span class="n">words</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">))</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_get_vec_of_word</span><span class="p">(</span><span class="n">corpus</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">corpus</span> <span class="o">==</span> <span class="s1">&#39;most_frequent_english&#39;</span><span class="p">:</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">most_frequent_words</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">english_word2vec_stream</span><span class="p">(</span><span class="n">word_filt</span><span class="o">=</span><span class="n">words</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">corpus</span> <span class="o">==</span> <span class="s1">&#39;english_all&#39;</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">english_word2vec_stream</span><span class="p">())</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unrecognized corpus value: </span><span class="si">{</span><span class="n">corpus</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="n">DFLT_WORDVEC_CORPUS_NAME</span> <span class="o">=</span> <span class="s1">&#39;most_frequent_english&#39;</span>
+
+<span class="n">word_to_vec_corpus_aliases</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;most_frequent_english&#39;</span><span class="p">:</span> <span class="s1">&#39;most_frequent_english&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;most_frequent&#39;</span><span class="p">:</span> <span class="s1">&#39;most_frequent_english&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;english_70982&#39;</span><span class="p">:</span> <span class="s1">&#39;most_frequent_english&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;english_all&#39;</span><span class="p">:</span> <span class="s1">&#39;english_all&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;english_999994&#39;</span><span class="p">:</span> <span class="s1">&#39;english_all&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_vec_of_word"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.get_vec_of_word">[docs]</a><span class="k">def</span> <span class="nf">get_vec_of_word</span><span class="p">(</span><span class="n">corpus</span><span class="o">=</span><span class="n">DFLT_WORDVEC_CORPUS_NAME</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a word_2_vec dict given an alias name&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">corpus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">corpus</span> <span class="o">=</span> <span class="n">DFLT_WORDVEC_CORPUS_NAME</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">corpus</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;most_frequent_english&#39;</span><span class="p">,</span> <span class="s1">&#39;most_frequent&#39;</span><span class="p">,</span> <span class="s1">&#39;english_70982&#39;</span><span class="p">}:</span>
+            <span class="n">_get_vec_of_word</span><span class="p">(</span><span class="s1">&#39;most_frequent_english&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">corpus</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;english_all&#39;</span><span class="p">,</span> <span class="s1">&#39;english_999994&#39;</span><span class="p">}:</span>
+            <span class="n">_get_vec_of_word</span><span class="p">(</span><span class="s1">&#39;most_frequent_english&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unrecognized corpus value: </span><span class="si">{</span><span class="n">corpus</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WordVec"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordVec">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">WordVec</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Terms:</span>
+<span class="sd">        - query is anything (usually a string) that can be fed to tokenizer to product a list of tokens</span>
+<span class="sd">        - words are tokens that are contained in the vec_of_word Mapping (keys)</span>
+<span class="sd">        - vec is a vector (from the same space as vec_of_word values): Used as a finger print of a query</span>
+<span class="sd">            (through it&#39;s tokenization and a formula on the corresponding word&#39;s vectors)</span>
+
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - If using a non-dict vec_of_word mapping, make sure the __contains__ is efficient, or processing will be slow.</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    w = WordVec(vec_of_word=wv)</span>
+<span class="sd">    assert w.dist(&#39;france capital&#39;, &#39;paris&#39;) &lt; w.dist(&#39;france capital&#39;, &#39;rome&#39;)</span>
+<span class="sd">    assert w.dist(&#39;italy capital&#39;, &#39;rome&#39;) &lt; w.dist(&#39;italy capital&#39;, &#39;paris&#39;)</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">vec_of_word</span><span class="p">:</span> <span class="n">WordVecStore</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">vec_of_word_default_factory</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[\w-]+&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">mk_tokenizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WordVec.dist"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordVec.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cosine distance between two queries (through their corresponding vectors)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cosine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query_to_vec</span><span class="p">(</span><span class="n">q1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_to_vec</span><span class="p">(</span><span class="n">q2</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="WordVec.query_to_vec"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordVec.query_to_vec">[docs]</a>    <span class="k">def</span> <span class="nf">query_to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The vector computed from a query (process is query-&gt;tokens-&gt;words-&gt;vecs-&gt;mean).</span>
+<span class="sd">        Note that a query that leads to an empty list of words will result in the mean of all vectors in vec_to_word</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_2_words</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_vec</span><span class="p">(</span><span class="n">words</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">query_to_vec_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_2_words</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_matrix</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mean_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">vectors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_matrix</span><span class="p">(</span><span class="n">words</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_mean</span>  <span class="c1"># if all else fails</span>
+
+    <span class="k">def</span> <span class="nf">query_2_words</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">tok</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="k">if</span> <span class="n">tok</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="p">]</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">global_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># return np.mean(list(self.vec_of_word.values()), axis=0)</span>
+
+    <span class="k">def</span> <span class="nf">vec_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tokenizer_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;unnamed_tokenizer&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;vec_of_word=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="p">)</span><span class="si">}</span><span class="s1"> words, &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;tokenizer=</span><span class="si">{</span><span class="n">tokenizer_name</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="p">)</span>
+
+    <span class="fm">__call__</span> <span class="o">=</span> <span class="n">query_to_vec</span>
+
+    <span class="c1"># TODO: Replace with &quot;explicit&quot; decorator</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_of_word</span><span class="p">)</span></div>
+
+
+<span class="n">Corpus</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="WordVecSearch"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordVecSearch">[docs]</a><span class="k">class</span> <span class="nc">WordVecSearch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make a search engine.</span>
+<span class="sd">    Trains on a corpus of vectors (or {word: vector,...} mapping</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">corpus_</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">corpus_keys_array_</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_vec</span><span class="p">:</span> <span class="n">WordVec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">knn_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param word_vec: A WordVec object that will</span>
+<span class="sd">        :param n_neighbors:</span>
+<span class="sd">        :param knn_kwargs:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">word_vec</span> <span class="o">=</span> <span class="n">word_vec</span> <span class="ow">or</span> <span class="n">WordVec</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">word_vec</span> <span class="o">=</span> <span class="n">word_vec</span>
+        <span class="n">knn_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">knn_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knn</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="o">**</span><span class="n">knn_kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WordVecSearch.fit"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.WordVecSearch.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus</span><span class="p">:</span> <span class="n">Corpus</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit on the given corpus</span>
+
+<span class="sd">        :param corpus: A Mapping or iterable whose values we will fit on</span>
+<span class="sd">            - corpus values must be valid self.word_vec arguments (usually strings)</span>
+<span class="sd">            - corpus keys (or indices, if corpus wasn&#39;t a Mapping) will be used in results of search</span>
+<span class="sd">            - if not specified, will default to word_vec keys</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">corpus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># if corpus is not given, use word_vec as the corpus</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_vec</span><span class="o">.</span><span class="n">vec_of_word</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">corpus</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">words</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+            <span class="n">corpus</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">corpus</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">corpus_</span> <span class="o">=</span> <span class="n">corpus</span>
+        <span class="n">vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">word_vec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">vecs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corpus_keys_array_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus_</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">include_dist</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_vec</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="n">r_dist</span><span class="p">,</span> <span class="n">r_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">query_vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">corpus_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_keys_array_</span><span class="p">[</span><span class="n">r_idx</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">include_dist</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">corpus_keys</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">corpus_keys</span><span class="p">,</span> <span class="n">r_dist</span>
+        <span class="k">except</span> <span class="n">NotFittedError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_when_searched_on_unfit_instance</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">include_dist</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_when_searched_on_unfit_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The search object wasn&#39;t fitted yet, so I&#39;m fitting it on the &quot;</span>
+            <span class="s1">&#39;wordvec data itself. &#39;</span>
+            <span class="s1">&#39;To avoid this message, do a .fit() before using the search &#39;</span>
+            <span class="s1">&#39;functionality.&#39;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+    <span class="fm">__call__</span> <span class="o">=</span> <span class="n">search</span></div>
+
+
+<div class="viewcode-block" id="StreamsOfZip"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.StreamsOfZip">[docs]</a><span class="k">class</span> <span class="nc">StreamsOfZip</span><span class="p">(</span><span class="n">FileStreamsOfZip</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_obj_of_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">line_to_raw_word_vec</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchOld"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.SearchOld">[docs]</a><span class="k">class</span> <span class="nc">SearchOld</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example:</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    zip_filepath = &#39;/D/Dropbox/_odata/misc/wiki-news-300d-1M-subword.vec.zip&#39;</span>
+
+<span class="sd">    import pandas as pd</span>
+<span class="sd">    df = pd.read_excel(&#39;/Users/twhalen/Downloads/pypi package names.xlsx&#39;)</span>
+<span class="sd">    target_words = set(df.word)</span>
+
+<span class="sd">    from grub.examples.pypi import Search</span>
+
+<span class="sd">    s = Search(zip_filepath, search_words=target_words)</span>
+<span class="sd">    s.search(&#39;search for the right name&#39;)</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\w+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">findall</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">wordvec_zip_filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">search_words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">wordvec_name_in_zip</span><span class="o">=</span><span class="s1">&#39;wiki-news-300d-1M-subword.vec&#39;</span><span class="p">,</span>
+        <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wordvec_zip_filepath</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">wordvec_zip_filepath</span> <span class="ow">or</span> <span class="n">get_english_word2vec_zip_filepath</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wordvec_name_in_zip</span> <span class="o">=</span> <span class="n">wordvec_name_in_zip</span>
+        <span class="k">if</span> <span class="n">search_words</span><span class="p">:</span>
+            <span class="n">search_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">search_words</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_words</span> <span class="o">=</span> <span class="n">search_words</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">n_neighbors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">StreamsOfZip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wordvec_zip_filepath</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">wordvecs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gathering all the word vecs. This could take a few minutes...&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">wordvec_name_in_zip</span><span class="p">]</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">all_wordvecs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">word_and_vecs</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">all_wordvecs</span>
+
+    <span class="k">def</span> <span class="nf">filtered_wordvecs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tok_filt</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">wordvec_name_in_zip</span><span class="p">]</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tok_filt</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">word_and_vecs</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">vec_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">wordvecs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">mean_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vec_matrix</span><span class="p">(</span><span class="n">words</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">query_to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_vec</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">query_to_vec_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_matrix</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">knn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">target_wv</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filtered_wordvecs</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_words</span><span class="p">))</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">target_wv</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+        <span class="n">knn</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">knn</span><span class="o">.</span><span class="n">words</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">target_wv</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">knn</span>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="n">query_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_to_vec</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">r_dist</span><span class="p">,</span> <span class="n">r_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">query_vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">words</span><span class="p">[</span><span class="n">r_idx</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_singular</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">get_singular_w_inflect</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_singular_w_inflect"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.get_singular_w_inflect">[docs]</a><span class="k">def</span> <span class="nf">get_singular_w_inflect</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singular form of a word using inflect</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    :func:`get_singular_w_nltk`, which creates plurals through a different method,</span>
+<span class="sd">    (a semantic approach). Once the data is loaded, nltk is faster than the inflect,</span>
+<span class="sd">    version, but gives less accurate results, since it&#39;s idea of singular is &quot;the</span>
+<span class="sd">    base concept&quot;.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">inflect</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">inflect</span><span class="o">.</span><span class="n">engine</span><span class="p">()</span>
+    <span class="n">singular</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">singular_noun</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">singular</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">singular</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">word</span></div>
+
+
+<div class="viewcode-block" id="get_singular_w_nltk"><a class="viewcode-back" href="../module_docs/idiom.html#idiom.get_singular_w_nltk">[docs]</a><span class="k">def</span> <span class="nf">get_singular_w_nltk</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singular form of a word using nltk&#39;s wordnet</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    :func:`get_singular_w_inflect`, which creates plurals through a different method,</span>
+<span class="sd">    (a rule-based approach). Once the data is loaded, nltk is faster than inflect,</span>
+<span class="sd">    but gives less accurate results, since it&#39;s idea of singular is &quot;the base concept&quot;.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">wordnet</span>
+
+    <span class="n">singular</span> <span class="o">=</span> <span class="n">word</span>
+    <span class="n">synsets</span> <span class="o">=</span> <span class="n">wordnet</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">synsets</span><span class="p">:</span>
+        <span class="n">lemma</span> <span class="o">=</span> <span class="n">synsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lemmas</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">singular</span> <span class="o">=</span> <span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">singular</span></div>
+
+
+<span class="n">_uncommon_plurals_to_test_with</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;goose&#39;</span><span class="p">,</span> <span class="s1">&#39;geese&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;mouse&#39;</span><span class="p">,</span> <span class="s1">&#39;mice&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;tooth&#39;</span><span class="p">,</span> <span class="s1">&#39;teeth&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;foot&#39;</span><span class="p">,</span> <span class="s1">&#39;feet&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;child&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="s1">&#39;people&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;man&#39;</span><span class="p">,</span> <span class="s1">&#39;men&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="s1">&#39;women&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;leaf&#39;</span><span class="p">,</span> <span class="s1">&#39;leaves&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;datum&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;cactus&#39;</span><span class="p">,</span> <span class="s1">&#39;cacti&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;focus&#39;</span><span class="p">,</span> <span class="s1">&#39;foci&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;fungus&#39;</span><span class="p">,</span> <span class="s1">&#39;fungi&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;syllabus&#39;</span><span class="p">,</span> <span class="s1">&#39;syllabi&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;thief&#39;</span><span class="p">,</span> <span class="s1">&#39;thieves&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;deer&#39;</span><span class="p">,</span> <span class="s1">&#39;deer&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;moose&#39;</span><span class="p">,</span> <span class="s1">&#39;moose&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;sheep&#39;</span><span class="p">,</span> <span class="s1">&#39;sheep&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;fish&#39;</span><span class="p">,</span> <span class="s1">&#39;fish&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="s1">&#39;species&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
