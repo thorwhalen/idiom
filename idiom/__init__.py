@@ -97,8 +97,11 @@ def most_frequent_words(max_n_words=100_000):
     """
     z = word_frequency_streams_of_zip()
     with z['unigram_freq.csv'] as zz:
-        d = dict(x.decode().split(',') for x in islice(zz, 0, max_n_words))
+        # note: skiping first line (header)
+        d = dict(x.decode().split(',') for x in islice(zz, 1, max_n_words + 1))
         d = {k: int(v) for k, v in d.items()}
+        # descend-sort this according the the work count (the values)
+        d = sorted(d, key=d.get, reverse=True)
         return d
 
 
