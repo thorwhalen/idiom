@@ -101,7 +101,7 @@ def most_frequent_words(max_n_words=100_000):
         d = dict(x.decode().split(',') for x in islice(zz, 1, max_n_words + 1))
         d = {k: int(v) for k, v in d.items()}
         # descend-sort this according the the work count (the values)
-        d = sorted(d, key=d.get, reverse=True)
+        d = dict(sorted(d.items(), key=lambda item: item[1], reverse=True))
         return d
 
 
