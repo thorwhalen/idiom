@@ -92,12 +92,21 @@ def word_frequency_streams_of_zip():
 
 @lru_cache(maxsize=1)
 def most_frequent_words(max_n_words=100_000):
-    """The set of most frequent words.
+    """The list of most frequent words ordered by most frequent first.
     Note: Twice faster than using FilesOfZip and pandas.read_csv
     """
     z = word_frequency_streams_of_zip()
     with z['unigram_freq.csv'] as zz:
-        return set([x.decode().split(',')[0] for x in islice(zz, 0, max_n_words)])
+        d = dict(x.decode().split(',') for x in islice(zz, 0, max_n_words))
+        d = {k: int(v) for k, v in d.items()}
+        return d
+
+
+def most_frequent_words_set(max_n_words=100_000):
+    """The set of most frequent words.
+    Note: Twice faster than using FilesOfZip and pandas.read_csv
+    """
+    return set(most_frequent_words(max_n_words))
 
 
 def _always_true(x):
@@ -276,7 +285,7 @@ def cosine(x, y):
 
 @lru_cache(maxsize=1)
 def vec_of_word_default_factory():
-    words = most_frequent_words()
+    words = set(most_frequent_words())
     return dict(english_word2vec_stream(word_filt=words.__contains__))
 
 
