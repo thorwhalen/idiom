@@ -83,7 +83,9 @@ jobs:
       #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Push Changes
-        run: pack check-in "**CI** Formatted code + Updated version number and documentation. [skip ci]" --auto-choose-default-action --bypass-docstring-validation --bypass-tests --bypass-code-formatting --verbose
+        run: |
+          pip -q install wads
+          pack check-in "**CI** Formatted code + Updated version number and documentation. [skip ci]" --auto-choose-default-action --bypass-docstring-validation --bypass-tests --bypass-code-formatting --verbose
 
       - name: Tag Repository With New Version Number
         uses: i2mint/isee/actions/tag-repository@master
