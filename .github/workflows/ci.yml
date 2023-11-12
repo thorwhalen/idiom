@@ -76,11 +76,14 @@ jobs:
           pypi-username: ${{ secrets.PYPI_USERNAME }}
           pypi-password: ${{ secrets.PYPI_PASSWORD }}
 
-      - name: Check In
-        uses: i2mint/isee/actions/check-in@master
-        with:
-          commit-message: "**CI** Formatted code + Updated version number and documentation. [skip ci]"
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # - name: Check In
+      #   uses: i2mint/isee/actions/check-in@master
+      #   with:
+      #     commit-message: "**CI** Formatted code + Updated version number and documentation. [skip ci]"
+      #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Push Changes
+        run: pack check-in "**CI** Formatted code + Updated version number and documentation. [skip ci]" --auto-choose-default-action --bypass-docstring-validation --bypass-tests --bypass-code-formatting --verbose
 
       - name: Tag Repository With New Version Number
         uses: i2mint/isee/actions/tag-repository@master
