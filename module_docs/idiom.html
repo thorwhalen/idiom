@@ -1,24 +1,26 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>idiom &mdash; idiom 0.0.4 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
-        <script src="../_static/toggleprompt.js"></script>
-        <script src="../_static/clipboard.min.js"></script>
-        <script src="../_static/copybutton.js"></script>
+  <title>idiom &mdash; idiom 0.1.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=360bc84d"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +46,36 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">idiom</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">idiom</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.SearchOld"><code class="docutils literal notranslate"><span class="pre">SearchOld</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#idiom.SearchOld.tokenizer"><code class="docutils literal notranslate"><span class="pre">SearchOld.tokenizer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.StreamsOfZip"><code class="docutils literal notranslate"><span class="pre">StreamsOfZip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.WordRawVecCreek"><code class="docutils literal notranslate"><span class="pre">WordRawVecCreek</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.WordVec"><code class="docutils literal notranslate"><span class="pre">WordVec</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#idiom.WordVec.dist"><code class="docutils literal notranslate"><span class="pre">WordVec.dist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#idiom.WordVec.query_to_vec"><code class="docutils literal notranslate"><span class="pre">WordVec.query_to_vec()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.WordVecCreek"><code class="docutils literal notranslate"><span class="pre">WordVecCreek</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.WordVecSearch"><code class="docutils literal notranslate"><span class="pre">WordVecSearch</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#idiom.WordVecSearch.fit"><code class="docutils literal notranslate"><span class="pre">WordVecSearch.fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.WordVecsOfZip"><code class="docutils literal notranslate"><span class="pre">WordVecsOfZip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.closest_words"><code class="docutils literal notranslate"><span class="pre">closest_words()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.get_singular_w_inflect"><code class="docutils literal notranslate"><span class="pre">get_singular_w_inflect()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.get_singular_w_nltk"><code class="docutils literal notranslate"><span class="pre">get_singular_w_nltk()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.get_vec_of_word"><code class="docutils literal notranslate"><span class="pre">get_vec_of_word()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.idf"><code class="docutils literal notranslate"><span class="pre">idf</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.most_frequent_words"><code class="docutils literal notranslate"><span class="pre">most_frequent_words()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.most_frequent_words_set"><code class="docutils literal notranslate"><span class="pre">most_frequent_words_set()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idiom.word_frequencies"><code class="docutils literal notranslate"><span class="pre">word_frequencies()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -74,11 +103,11 @@
            <div itemprop="articleBody">
              
   <section id="module-idiom">
-<span id="idiom"></span><h1>idiom<a class="headerlink" href="#module-idiom" title="Permalink to this headline">¶</a></h1>
+<span id="idiom"></span><h1>idiom<a class="headerlink" href="#module-idiom" title="Link to this heading"></a></h1>
 <p>Access to wordvec data and useful functions that use it.</p>
 <dl class="py class">
-<dt id="idiom.SearchOld">
-<em class="property">class </em><code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">SearchOld</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wordvec_zip_filepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">search_words</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wordvec_name_in_zip</span><span class="o">=</span><span class="default_value">'wiki-news-300d-1M-subword.vec'</span></em>, <em class="sig-param"><span class="n">n_neighbors</span><span class="o">=</span><span class="default_value">37</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#SearchOld"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.SearchOld" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.SearchOld">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">SearchOld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wordvec_zip_filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wordvec_name_in_zip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'wiki-news-300d-1M-subword.vec'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">37</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#SearchOld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.SearchOld" title="Link to this definition"></a></dt>
 <dd><p>Example:</p>
 <p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
 zip_filepath = ‘/D/Dropbox/_odata/misc/wiki-news-300d-1M-subword.vec.zip’</p>
@@ -90,26 +119,26 @@ target_words = set(df.word)</p>
 s.search(‘search for the right name’)
 <a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
 <dl class="py method">
-<dt id="idiom.SearchOld.tokenizer">
-<code class="sig-name descname">tokenizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pos</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">endpos</span><span class="o">=</span><span class="default_value">9223372036854775807</span></em><span class="sig-paren">)</span><a class="headerlink" href="#idiom.SearchOld.tokenizer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.SearchOld.tokenizer">
+<span class="sig-name descname"><span class="pre">tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#idiom.SearchOld.tokenizer" title="Link to this definition"></a></dt>
 <dd><p>Return a list of all non-overlapping matches of pattern in string.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="idiom.StreamsOfZip">
-<em class="property">class </em><code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">StreamsOfZip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zip_file</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">open_kws</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#StreamsOfZip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.StreamsOfZip" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.StreamsOfZip">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">StreamsOfZip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#StreamsOfZip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.StreamsOfZip" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="idiom.WordRawVecCreek">
-<em class="property">class </em><code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">WordRawVecCreek</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordRawVecCreek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordRawVecCreek" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordRawVecCreek">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordRawVecCreek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordRawVecCreek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordRawVecCreek" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="idiom.WordVec">
-<em class="property">class </em><code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">WordVec</code><span class="sig-paren">(</span><em class="sig-param">vec_of_word: Mapping[str</em>, <em class="sig-param">numpy.ndarray] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordVec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordVec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec_of_word:</span> <span class="pre">~typing.Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~numpy.ndarray]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordVec" title="Link to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>Terms:</dt><dd><ul class="simple">
 <li><p>query is anything (usually a string) that can be fed to tokenizer to product a list of tokens</p></li>
@@ -132,14 +161,14 @@ s.search(‘search for the right name’)
 <span class="pre">assert</span> <span class="pre">w.dist('italy</span> <span class="pre">capital',</span> <span class="pre">'rome')</span> <span class="pre">&lt;</span> <span class="pre">w.dist('italy</span> <span class="pre">capital',</span> <span class="pre">'paris')</span>
 <span class="pre">`</span></code></p>
 <dl class="py method">
-<dt id="idiom.WordVec.dist">
-<code class="sig-name descname">dist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q1</span></em>, <em class="sig-param"><span class="n">q2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec.dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordVec.dist" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordVec.dist">
+<span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec.dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordVec.dist" title="Link to this definition"></a></dt>
 <dd><p>Cosine distance between two queries (through their corresponding vectors)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="idiom.WordVec.query_to_vec">
-<code class="sig-name descname">query_to_vec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec.query_to_vec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordVec.query_to_vec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordVec.query_to_vec">
+<span class="sig-name descname"><span class="pre">query_to_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec.query_to_vec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordVec.query_to_vec" title="Link to this definition"></a></dt>
 <dd><p>The vector computed from a query (process is query-&gt;tokens-&gt;words-&gt;vecs-&gt;mean).
 Note that a query that leads to an empty list of words will result in the mean of all vectors in vec_to_word</p>
 </dd></dl>
@@ -147,21 +176,21 @@ Note that a query that leads to an empty list of words will result in the mean o
 </dd></dl>
 
 <dl class="py class">
-<dt id="idiom.WordVecCreek">
-<em class="property">class </em><code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">WordVecCreek</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream</span></em>, <em class="sig-param"><span class="n">word_filt</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecCreek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordVecCreek" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordVecCreek">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVecCreek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_filt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecCreek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordVecCreek" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="idiom.WordVecSearch">
-<em class="property">class </em><code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">WordVecSearch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word_vec</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#idiom.WordVec" title="idiom.WordVec">idiom.WordVec</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_neighbors</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">knn_kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecSearch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordVecSearch" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordVecSearch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVecSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#idiom.WordVec" title="idiom.WordVec"><span class="pre">WordVec</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">knn_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordVecSearch" title="Link to this definition"></a></dt>
 <dd><p>Make a search engine.
 Trains on a corpus of vectors (or {word: vector,…} mapping</p>
 <dl class="py method">
-<dt id="idiom.WordVecSearch.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corpus</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>Mapping<span class="p">, </span>Iterable<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecSearch.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordVecSearch.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordVecSearch.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecSearch.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordVecSearch.fit" title="Link to this definition"></a></dt>
 <dd><p>Fit on the given corpus</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>corpus</strong> – A Mapping or iterable whose values we will fit on
 - corpus values must be valid self.word_vec arguments (usually strings)
 - corpus keys (or indices, if corpus wasn’t a Mapping) will be used in results of search
@@ -173,13 +202,13 @@ Trains on a corpus of vectors (or {word: vector,…} mapping</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="idiom.WordVecsOfZip">
-<em class="property">class </em><code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">WordVecsOfZip</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecsOfZip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.WordVecsOfZip" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.WordVecsOfZip">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVecsOfZip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecsOfZip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.WordVecsOfZip" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="idiom.closest_words">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">closest_words</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">search_words</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>Callable<span class="p">, </span>Iterable<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">vec_of_word</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#closest_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.closest_words" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.closest_words">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">closest_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec_of_word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#closest_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.closest_words" title="Link to this definition"></a></dt>
 <dd><p>Search words related to a give word.
 Given a word, search for the <cite>k</cite> closest words to it from a search corpus
 (which may just be the wordvec words filtered for specific patterns).</p>
@@ -206,8 +235,8 @@ those words that wordvecs doesn’t have:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="idiom.get_singular_w_inflect">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">get_singular_w_inflect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/idiom.html#get_singular_w_inflect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.get_singular_w_inflect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.get_singular_w_inflect">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">get_singular_w_inflect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/idiom.html#get_singular_w_inflect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.get_singular_w_inflect" title="Link to this definition"></a></dt>
 <dd><p>Get the singular form of a word using inflect</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -219,8 +248,8 @@ base concept”.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="idiom.get_singular_w_nltk">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">get_singular_w_nltk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">word</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/idiom.html#get_singular_w_nltk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.get_singular_w_nltk" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.get_singular_w_nltk">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">get_singular_w_nltk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/idiom.html#get_singular_w_nltk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.get_singular_w_nltk" title="Link to this definition"></a></dt>
 <dd><p>Get the singular form of a word using nltk’s wordnet</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -231,42 +260,42 @@ but gives less accurate results, since it’s idea of singular is “the base co
 </dd></dl>
 
 <dl class="py function">
-<dt id="idiom.get_vec_of_word">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">get_vec_of_word</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corpus</span><span class="o">=</span><span class="default_value">'most_frequent_english'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#get_vec_of_word"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.get_vec_of_word" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.get_vec_of_word">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">get_vec_of_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'most_frequent_english'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#get_vec_of_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.get_vec_of_word" title="Link to this definition"></a></dt>
 <dd><p>Get a word_2_vec dict given an alias name</p>
 </dd></dl>
 
 <dl class="py data">
-<dt id="idiom.idf">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">idf</code><em class="property"> = &lt;idiom._IDF object&gt;</em><a class="headerlink" href="#idiom.idf" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.idf">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">idf</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;idiom._IDF</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#idiom.idf" title="Link to this definition"></a></dt>
 <dd><p>factor[word] = log(N / (1 + count[word])), where N is the total number of documents in the corpus. This formula is a commonly used variant of IDF in the TF-IDF approach. The logarithmic term ensures that words with very high counts are not penalized too heavily, while still giving a significant weight to words that occur in a small subset of documents.
 Smoothed IDF: factor[word] = log((N + 1) / (1 + count[word])) + 1, where N is the total number of documents in the corpus. This formula is similar to the logarithmic IDF, but with a smoothing term of 1 added to the numerator and denominator. This helps to avoid division by zero when a word appears in all documents, and gives a non-zero weight to all words.
 Probabilistic IDF: factor[word] = log((N - count[word] + 0.5) / (count[word] + 0.5)), where N is the total number of documents in the corpus. This formula is a variant of IDF that takes into account the document frequency of a word, as well as the collection frequency. The term 0.5 is added to the numerator and denominator to avoid division by zero.
 Max IDF: factor[word] = log(N / max(count.values())) - log(1 + count[word]), where N is the total number of documents in the corpus. This formula gives a weight to words based on their inverse document frequency, with a term subtracted to penalize words that occur frequently in a single document. The denominator of the second logarithm ensures that words with zero counts are not penalized too heavily.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Logarithmic IDF</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="idiom.most_frequent_words">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">most_frequent_words</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_n_words</span><span class="o">=</span><span class="default_value">100000</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#most_frequent_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.most_frequent_words" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.most_frequent_words">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">most_frequent_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_n_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#most_frequent_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.most_frequent_words" title="Link to this definition"></a></dt>
 <dd><p>The list of most frequent words ordered by most frequent first.
 Note: Twice faster than using FilesOfZip and pandas.read_csv</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="idiom.most_frequent_words_set">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">most_frequent_words_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_n_words</span><span class="o">=</span><span class="default_value">100000</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#most_frequent_words_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.most_frequent_words_set" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.most_frequent_words_set">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">most_frequent_words_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_n_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#most_frequent_words_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.most_frequent_words_set" title="Link to this definition"></a></dt>
 <dd><p>The set of most frequent words.
 Note: Twice faster than using FilesOfZip and pandas.read_csv</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="idiom.word_frequencies">
-<code class="sig-prename descclassname">idiom.</code><code class="sig-name descname">word_frequencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#word_frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#idiom.word_frequencies" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="idiom.word_frequencies">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">word_frequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#word_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#idiom.word_frequencies" title="Link to this definition"></a></dt>
 <dd><p>The set of most frequent words.
 Note: Twice faster than using FilesOfZip and pandas.read_csv</p>
 </dd></dl>
