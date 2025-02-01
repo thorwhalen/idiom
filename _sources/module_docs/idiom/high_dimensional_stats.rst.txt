@@ -1,0 +1,4 @@
+idiom.high_dimensional_stats
+============================
+.. automodule:: idiom.high_dimensional_stats
+   :members:
