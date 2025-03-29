@@ -4,7 +4,7 @@ Access and operations with word2vec data
 
 To install:	```pip install idiom```
 
-For more NLP work, see [mood](https://github.com/infinvest/mood/) and [mood](https://github.com/thorwhalen/lexis/).
+For more NLP work, see [mood](https://github.com/infinvest/mood/) and [lexis](https://github.com/thorwhalen/lexis/).
 
 ## Overview
 
