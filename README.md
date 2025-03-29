@@ -4,6 +4,8 @@ Access and operations with word2vec data
 
 To install:	```pip install idiom```
 
+For more NLP work, see [mood](https://github.com/infinvest/mood/).
+
 ## Overview
 
 The `idiom` package provides access to word vector data and useful functions to manipulate and analyze it. It includes functionalities for finding the closest words to a given word, calculating word frequencies, and working with various word vector models.
