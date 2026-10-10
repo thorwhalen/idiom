@@ -4,12 +4,14 @@ Access to wordvec data and useful functions that use it.
 
 from functools import cached_property, partial, lru_cache
 import re
-from typing import Mapping, Any, Callable, Union, Iterable, Optional
+from typing import Any, Union, Optional
+from collections.abc import Mapping, Callable, Iterable
 from importlib_resources import files as package_files
 from dataclasses import dataclass, field
 from itertools import islice
 from heapq import nlargest
-from typing import Iterable, Callable, Union, Optional
+from typing import Union, Optional
+from collections.abc import Iterable, Callable
 
 
 import numpy as np
@@ -37,7 +39,7 @@ word_frequency_posixpath = data_files.joinpath('english-word-frequency.zip')
 def closest_words(
     word,
     k=10,
-    search_words: Optional[Union[Callable, Iterable]] = None,
+    search_words: Callable | Iterable | None = None,
     vec_of_word=None,
 ):
     """Search words related to a give word.
