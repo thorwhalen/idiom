@@ -12,14 +12,14 @@ from warnings import warn
 import numpy as np
 from scipy.stats import norm
 
-AngleUnits = Literal['cosine', 'degrees', 'radians']
+AngleUnits = Literal["cosine", "degrees", "radians"]
 
 
 def convert_angle(
     angle: float,
     *,
-    input_unit: AngleUnits = 'degrees',
-    output_unit: AngleUnits = 'cosine',
+    input_unit: AngleUnits = "degrees",
+    output_unit: AngleUnits = "cosine",
 ) -> float:
     """
     Converts an angle between different units: degrees, radians, and cosine.
@@ -39,20 +39,20 @@ def convert_angle(
     if input_unit == output_unit:
         return angle
 
-    if input_unit == 'degrees':
+    if input_unit == "degrees":
         radians = np.deg2rad(angle)
-    elif input_unit == 'radians':
+    elif input_unit == "radians":
         radians = angle
-    elif input_unit == 'cosine':
+    elif input_unit == "cosine":
         radians = np.arccos(angle)
     else:
         raise ValueError(f"Unsupported input unit: {input_unit}")
 
-    if output_unit == 'degrees':
+    if output_unit == "degrees":
         return np.rad2deg(radians)
-    elif output_unit == 'radians':
+    elif output_unit == "radians":
         return radians
-    elif output_unit == 'cosine':
+    elif output_unit == "cosine":
         return np.cos(radians)
     else:
         raise ValueError(f"Unsupported output unit: {output_unit}")
@@ -61,8 +61,8 @@ def convert_angle(
 def convert_epsilon_angle(
     angle: float,
     *,
-    input_unit: AngleUnits = 'degrees',
-    output_unit: AngleUnits = 'cosine',
+    input_unit: AngleUnits = "degrees",
+    output_unit: AngleUnits = "cosine",
 ) -> float:
     """
     Computes the absolute difference between a straight angle (180 degrees or π radians)
@@ -76,7 +76,7 @@ def convert_epsilon_angle(
     >>> float(convert_epsilon_angle(0, input_unit='degrees', output_unit='radians'))  # doctest: +ELLIPSIS
     1.5707...
     """
-    straight_angle = {'degrees': 90, 'radians': np.pi / 2, 'cosine': -1}[input_unit]
+    straight_angle = {"degrees": 90, "radians": np.pi / 2, "cosine": -1}[input_unit]
     epsilon_angle = abs(straight_angle - angle)
 
     return convert_angle(epsilon_angle, input_unit=input_unit, output_unit=output_unit)
@@ -99,7 +99,7 @@ def expected_dot_product_variance(n: int) -> float:
 
 
 def nearly_orthogonal_vectors_johnson_lindenstrauss(
-    n: int, epsilon: float = 0.01, epsilon_unit: AngleUnits = 'cosine'
+    n: int, epsilon: float = 0.01, epsilon_unit: AngleUnits = "cosine"
 ) -> float:
     """
     Estimates the number of nearly orthogonal vectors that can fit in an n-dimensional
@@ -124,15 +124,13 @@ def nearly_orthogonal_vectors_johnson_lindenstrauss(
     if n < 2:
         raise ValueError("The dimension must be at least 2.")
     epsilon = convert_epsilon_angle(
-        epsilon, input_unit=epsilon_unit, output_unit='cosine'
+        epsilon, input_unit=epsilon_unit, output_unit="cosine"
     )
-    return math.floor(
-        max(n, np.exp((n * epsilon**2) / 2) / epsilon)
-    )
+    return math.floor(max(n, np.exp((n * epsilon**2) / 2) / epsilon))
 
 
 def nearly_orthogonal_vectors_equiangular(
-    n: int, epsilon: float, epsilon_unit: AngleUnits = 'cosine'
+    n: int, epsilon: float, epsilon_unit: AngleUnits = "cosine"
 ) -> float:
     """
     Estimates a (provable) lower bound for the maximum number N(ε, n) of unit vectors in an n-dimensional
@@ -180,14 +178,16 @@ def nearly_orthogonal_vectors_equiangular(
     # >>> nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit='degrees')
     # 100000
     # >>> nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit='degrees')
-    
+
     """
     warn("Don't believe these numbers. Not sure I got the math right.")
-    epsilon = convert_epsilon_angle(epsilon, input_unit=epsilon_unit, output_unit='cosine')
+    epsilon = convert_epsilon_angle(
+        epsilon, input_unit=epsilon_unit, output_unit="cosine"
+    )
     # If epsilon is 1 or larger, every unit vector trivially satisfies the condition,
     # so the maximum number is unbounded.
     if epsilon >= 1:
-        return float('inf')
+        return float("inf")
     # For epsilon = 0, the only possibility is an orthonormal set.
     if epsilon == 0:
         return n
@@ -201,7 +201,7 @@ def nearly_orthogonal_vectors_equiangular(
 
 
 def nearly_orthogonal_vectors(
-    n: int, epsilon: float, epsilon_unit: AngleUnits = 'cosine'
+    n: int, epsilon: float, epsilon_unit: AngleUnits = "cosine"
 ):
     """
     Estimates the min number of nearly orthogonal vectors that can fit in an
