@@ -33,7 +33,7 @@ def convert_angle(
     1.570796...
     >>> float(convert_angle(0.5, input_unit='radians', output_unit='degrees'))  # doctest: +ELLIPSIS
     28.6478...
-    >>> convert_angle(0, input_unit='degrees', output_unit='cosine')  # doctest: +ELLIPSIS
+    >>> float(convert_angle(0, input_unit='degrees', output_unit='cosine'))  # doctest: +ELLIPSIS
     1.0
     """
     if input_unit == output_unit:
