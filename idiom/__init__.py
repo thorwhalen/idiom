@@ -33,7 +33,7 @@ english_word2vec_url = (
     "https://dl.fbaipublicfiles.com/fasttext/vectors-english/"
     "wiki-news-300d-1M-subword.vec.zip"
 )
-word_frequency_posixpath = data_files.joinpath("english-word-frequency.zip")
+word_frequency_posixpath = data_files.joinpath("english-word-frequency.csv.zip")
 
 
 def closest_words(
