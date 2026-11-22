@@ -1,4 +1,4 @@
-> built 2026-11-22 14:59 UTC from deee990 (master) · idiom 0.1.3. Details: build_info.json
+> built 2026-11-22 18:28 UTC from 67be9c0 (master) · idiom 0.1.3. Details: build_info.json
 
 # index.html.md
 
@@ -567,7 +567,7 @@ Twice faster than using FilesOfZip and pandas.read_csv
 
 # About this build
 
-This documentation was built on **2026-11-22 14:59 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/deee990abe5d8a3731184da5b8e444f220e175d9"><code>deee990</code></a> on branch <code>master</code>, for **idiom 0.1.3** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 18:28 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/67be9c03ef1cddd6bd1725d68bd9bcca763f11d4"><code>67be9c0</code></a> on branch <code>master</code>, for **idiom 0.1.3** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
@@ -578,7 +578,7 @@ The documentation and the package may be misaligned:
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/deee990abe5d8a3731184da5b8e444f220e175d9"><code>deee990abe5d8a3731184da5b8e444f220e175d9</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/67be9c03ef1cddd6bd1725d68bd9bcca763f11d4"><code>67be9c03ef1cddd6bd1725d68bd9bcca763f11d4</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -589,9 +589,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/idiom</code>                                                              |
-| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45035653296">45035653296</a>     |
+| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45055160574">45055160574</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>deee990abe5d8a3731184da5b8e444f220e175d9</code> (in the history of the built commit) |
+| Event commit | <code>67be9c03ef1cddd6bd1725d68bd9bcca763f11d4</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -622,7 +622,7 @@ Latest release: <a href="https://pypi.org/project/idiom/0.1.6/">0.1.6</a>, newer
 
 ```bash
 git clone https://github.com/thorwhalen/idiom && cd idiom
-git checkout deee990abe5d8a3731184da5b8e444f220e175d9
+git checkout 67be9c03ef1cddd6bd1725d68bd9bcca763f11d4
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
