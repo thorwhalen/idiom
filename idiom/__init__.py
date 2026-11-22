@@ -330,7 +330,7 @@ def _get_vec_of_word(corpus):
             words = most_frequent_words()
             return dict(english_word2vec_stream(word_filt=words.__contains__))
         elif corpus == 'english_all':
-            dict(english_word2vec_stream())
+            return dict(english_word2vec_stream())
     raise ValueError(f'Unrecognized corpus value: {corpus}')
 
 
@@ -349,11 +349,11 @@ def get_vec_of_word(corpus=DFLT_WORDVEC_CORPUS_NAME):
     """Get a word_2_vec dict given an alias name"""
     if corpus is None:
         corpus = DFLT_WORDVEC_CORPUS_NAME
+    if isinstance(corpus, Mapping):  # already a word -> vector mapping
+        return corpus
     if isinstance(corpus, str):
-        if corpus in {'most_frequent_english', 'most_frequent', 'english_70982'}:
-            _get_vec_of_word('most_frequent_english')
-        elif corpus in {'english_all', 'english_999994'}:
-            _get_vec_of_word('most_frequent_english')
+        if corpus in word_to_vec_corpus_aliases:
+            return _get_vec_of_word(word_to_vec_corpus_aliases[corpus])
     raise ValueError(f'Unrecognized corpus value: {corpus}')
 
 
@@ -484,7 +484,7 @@ class WordVecSearch:
             corpus = dict(enumerate(corpus))
 
         self.corpus_ = corpus
-        vecs = np.array(list(map(self.word_vec, self.corpus_)))
+        vecs = np.array(list(map(self.word_vec, self.corpus_.values())))
         self.knn.fit(vecs)
         self.corpus_keys_array_ = np.array(list(self.corpus_.keys()))
         return self
