@@ -1,4 +1,4 @@
-> built 2026-11-22 18:28 UTC from 67be9c0 (master) · idiom 0.1.3. Details: build_info.json
+> built 2026-11-22 19:15 UTC from a80ae94 (master) · idiom 0.1.3. Details: build_info.json
 
 # index.html.md
 
@@ -567,18 +567,18 @@ Twice faster than using FilesOfZip and pandas.read_csv
 
 # About this build
 
-This documentation was built on **2026-11-22 18:28 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/67be9c03ef1cddd6bd1725d68bd9bcca763f11d4"><code>67be9c0</code></a> on branch <code>master</code>, for **idiom 0.1.3** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:15 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/a80ae948bd3f2eae401b98090f6997a79c73618d"><code>a80ae94</code></a> on branch <code>master</code>, for **idiom 0.1.3** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.3) is behind the latest release on PyPI (0.1.6): `pip install idiom` gives newer code than these docs describe.
+- The documented version (0.1.3) is behind the latest release on PyPI (0.1.7): `pip install idiom` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/67be9c03ef1cddd6bd1725d68bd9bcca763f11d4"><code>67be9c03ef1cddd6bd1725d68bd9bcca763f11d4</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/a80ae948bd3f2eae401b98090f6997a79c73618d"><code>a80ae948bd3f2eae401b98090f6997a79c73618d</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -589,9 +589,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/idiom</code>                                                              |
-| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45055160574">45055160574</a>     |
+| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45059567938">45059567938</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>67be9c03ef1cddd6bd1725d68bd9bcca763f11d4</code> (in the history of the built commit) |
+| Event commit | <code>a80ae948bd3f2eae401b98090f6997a79c73618d</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -616,13 +616,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/idiom/0.1.6/">0.1.6</a>, newer than the documented version (0.1.3).
+Latest release: <a href="https://pypi.org/project/idiom/0.1.7/">0.1.7</a>, newer than the documented version (0.1.3).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/idiom && cd idiom
-git checkout 67be9c03ef1cddd6bd1725d68bd9bcca763f11d4
+git checkout a80ae948bd3f2eae401b98090f6997a79c73618d
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

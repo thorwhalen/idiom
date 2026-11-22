@@ -517,7 +517,7 @@
 </span><span id="line-330">            <span class="n">words</span> <span class="o">=</span> <span class="n">most_frequent_words</span><span class="p">()</span>
 </span><span id="line-331">            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">english_word2vec_stream</span><span class="p">(</span><span class="n">word_filt</span><span class="o">=</span><span class="n">words</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">))</span>
 </span><span id="line-332">        <span class="k">elif</span> <span class="n">corpus</span> <span class="o">==</span> <span class="s1">'english_all'</span><span class="p">:</span>
-</span><span id="line-333">            <span class="nb">dict</span><span class="p">(</span><span class="n">english_word2vec_stream</span><span class="p">())</span>
+</span><span id="line-333">            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">english_word2vec_stream</span><span class="p">())</span>
 </span><span id="line-334">    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Unrecognized corpus value: </span><span class="si">{</span><span class="n">corpus</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </span><span id="line-335">
 </span><span id="line-336">
@@ -538,11 +538,11 @@
 </span><span id="line-349"><span class="w">    </span><span class="sd">"""Get a word_2_vec dict given an alias name"""</span>
 </span><span id="line-350">    <span class="k">if</span> <span class="n">corpus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="line-351">        <span class="n">corpus</span> <span class="o">=</span> <span class="n">DFLT_WORDVEC_CORPUS_NAME</span>
-</span><span id="line-352">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-</span><span id="line-353">        <span class="k">if</span> <span class="n">corpus</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">'most_frequent_english'</span><span class="p">,</span> <span class="s1">'most_frequent'</span><span class="p">,</span> <span class="s1">'english_70982'</span><span class="p">}:</span>
-</span><span id="line-354">            <span class="n">_get_vec_of_word</span><span class="p">(</span><span class="s1">'most_frequent_english'</span><span class="p">)</span>
-</span><span id="line-355">        <span class="k">elif</span> <span class="n">corpus</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">'english_all'</span><span class="p">,</span> <span class="s1">'english_999994'</span><span class="p">}:</span>
-</span><span id="line-356">            <span class="n">_get_vec_of_word</span><span class="p">(</span><span class="s1">'most_frequent_english'</span><span class="p">)</span>
+</span><span id="line-352">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>  <span class="c1"># already a word -&gt; vector mapping</span>
+</span><span id="line-353">        <span class="k">return</span> <span class="n">corpus</span>
+</span><span id="line-354">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="line-355">        <span class="k">if</span> <span class="n">corpus</span> <span class="ow">in</span> <span class="n">word_to_vec_corpus_aliases</span><span class="p">:</span>
+</span><span id="line-356">            <span class="k">return</span> <span class="n">_get_vec_of_word</span><span class="p">(</span><span class="n">word_to_vec_corpus_aliases</span><span class="p">[</span><span class="n">corpus</span><span class="p">])</span>
 </span><span id="line-357">    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Unrecognized corpus value: </span><span class="si">{</span><span class="n">corpus</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span></div>
 
 </span><span id="line-358">
@@ -687,7 +687,7 @@
 </span><span id="line-484">            <span class="n">corpus</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">corpus</span><span class="p">))</span>
 </span><span id="line-485">
 </span><span id="line-486">        <span class="bp">self</span><span class="o">.</span><span class="n">corpus_</span> <span class="o">=</span> <span class="n">corpus</span>
-</span><span id="line-487">        <span class="n">vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">word_vec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_</span><span class="p">)))</span>
+</span><span id="line-487">        <span class="n">vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">word_vec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
 </span><span id="line-488">        <span class="bp">self</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">vecs</span><span class="p">)</span>
 </span><span id="line-489">        <span class="bp">self</span><span class="o">.</span><span class="n">corpus_keys_array_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus_</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 </span><span id="line-490">        <span class="k">return</span> <span class="bp">self</span></div>
