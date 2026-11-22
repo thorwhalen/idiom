@@ -105,7 +105,10 @@
 <section id="idiom">
 <h1>idiom<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom">¶</a></h1>
 <p>Access and operations with word2vec data</p>
-<p>To install:	<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">idiom</span></code></p>
+<p>To install:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">pip</span> <span class="n">install</span> <span class="n">idiom</span>
+</span></code></pre></div>
+</div>
 <p>For more NLP work, see <a class="reference external" href="https://github.com/infinvest/mood/" rel="nofollow noopener">mood<svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a> and <a class="reference external" href="https://github.com/thorwhalen/lexis/" rel="nofollow noopener">lexis<svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>.</p>
 <section id="overview">
 <h2>Overview<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#overview" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#overview'">¶</a></h2>
@@ -125,6 +128,7 @@
 <section id="finding-closest-words">
 <h3>Finding Closest Words<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#finding-closest-words" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#finding-closest-words'">¶</a></h3>
 <p>You can find the closest words to a given word using the <code class="docutils literal notranslate"><span class="pre">closest_words</span></code> function:</p>
+
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">idiom</span><span class="w"> </span><span class="kn">import</span> <span class="n">closest_words</span>
 </span><span id="line-2">
 </span><span id="line-3"><span class="c1"># Example: Find the closest words to 'mad' that start with 'l'</span>
@@ -136,6 +140,7 @@
 <section id="accessing-word-frequencies">
 <h3>Accessing Word Frequencies<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#accessing-word-frequencies" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#accessing-word-frequencies'">¶</a></h3>
 <p>You can access the most frequent words using the <code class="docutils literal notranslate"><span class="pre">most_frequent_words</span></code> function:</p>
+
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">idiom</span><span class="w"> </span><span class="kn">import</span> <span class="n">most_frequent_words</span>
 </span><span id="line-2">
 </span><span id="line-3"><span class="c1"># Get the top 100,000 most frequent words</span>
@@ -147,6 +152,7 @@
 <section id="working-with-word-vectors">
 <h3>Working with Word Vectors<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#working-with-word-vectors" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#working-with-word-vectors'">¶</a></h3>
 <p>You can load and work with pre-trained word vectors using the <code class="docutils literal notranslate"><span class="pre">WordVec</span></code> class:</p>
+
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">idiom</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordVec</span>
 </span><span id="line-2">
 </span><span id="line-3"><span class="c1"># Initialize WordVec with default word vectors</span>
@@ -161,6 +167,7 @@
 <section id="idf-calculations">
 <h3>IDF Calculations<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idf-calculations" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idf-calculations'">¶</a></h3>
 <p>You can compute different types of IDF values using the <code class="docutils literal notranslate"><span class="pre">_IDF</span></code> class:</p>
+
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">idiom</span><span class="w"> </span><span class="kn">import</span> <span class="n">idf</span>
 </span><span id="line-2">
 </span><span id="line-3"><span class="c1"># Access logarithmic IDF values</span>
@@ -181,7 +188,7 @@
 
 </section>
 </section>
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 19:56 UTC from <a href="https://github.com/thorwhalen/idiom/commit/db2b914b2fdb0fc89e0deb0174366caf5845493a">db2b914</a> (master) · idiom 0.1.7 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 21:58 UTC from <a href="https://github.com/thorwhalen/idiom/commit/6cd153a1b329c83a39db0f1c1f29ce2b5184f80e">6cd153a</a> (master) · idiom 0.1.7 · <a href="about-this-build.html">about this build</a></p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>

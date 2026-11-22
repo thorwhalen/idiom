@@ -1,4 +1,4 @@
-> built 2026-11-22 19:56 UTC from db2b914 (master) · idiom 0.1.7. Details: build_info.json
+> built 2026-11-22 21:58 UTC from 6cd153a (master) · idiom 0.1.7. Details: build_info.json
 
 # index.html.md
 
@@ -8,7 +8,11 @@
 
 Access and operations with word2vec data
 
-To install:	`pip install idiom`
+To install:
+
+```default
+pip install idiom
+```
 
 For more NLP work, see [mood](https://github.com/infinvest/mood/) and [lexis](https://github.com/thorwhalen/lexis/).
 
@@ -29,6 +33,7 @@ The `idiom` package provides access to word vector data and useful functions to 
 
 You can find the closest words to a given word using the `closest_words` function:
 
+<!-- wads-docs: skip needs the packaged frequency file (idiom#8) and a ~1 GB fastText download -->
 ```python
 from idiom import closest_words
 
@@ -41,6 +46,7 @@ print(closest_words('mad', k=10, search_words=starts_with_L))
 
 You can access the most frequent words using the `most_frequent_words` function:
 
+<!-- wads-docs: skip needs the packaged frequency file (idiom#8) -->
 ```python
 from idiom import most_frequent_words
 
@@ -53,6 +59,7 @@ print(frequent_words)
 
 You can load and work with pre-trained word vectors using the `WordVec` class:
 
+<!-- wads-docs: skip needs fastText word vectors (large download) -->
 ```python
 from idiom import WordVec
 
@@ -68,6 +75,7 @@ print(distance)
 
 You can compute different types of IDF values using the `_IDF` class:
 
+<!-- wads-docs: skip needs the packaged frequency file (idiom#8) -->
 ```python
 from idiom import idf
 
@@ -567,7 +575,7 @@ Twice faster than using FilesOfZip and pandas.read_csv
 
 # About this build
 
-This documentation was built on **2026-11-22 19:56 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/db2b914b2fdb0fc89e0deb0174366caf5845493a"><code>db2b914</code></a> on branch <code>master</code>, for **idiom 0.1.7** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 21:58 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/6cd153a1b329c83a39db0f1c1f29ce2b5184f80e"><code>6cd153a</code></a> on branch <code>master</code>, for **idiom 0.1.7** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -576,7 +584,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/db2b914b2fdb0fc89e0deb0174366caf5845493a"><code>db2b914b2fdb0fc89e0deb0174366caf5845493a</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/6cd153a1b329c83a39db0f1c1f29ce2b5184f80e"><code>6cd153a1b329c83a39db0f1c1f29ce2b5184f80e</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -587,9 +595,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/idiom</code>                                                              |
-| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45063449053">45063449053</a>     |
+| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45074855422">45074855422</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>db2b914b2fdb0fc89e0deb0174366caf5845493a</code> (in the history of the built commit) |
+| Event commit | <code>6cd153a1b329c83a39db0f1c1f29ce2b5184f80e</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -620,7 +628,7 @@ Latest release: <a href="https://pypi.org/project/idiom/0.1.7/">0.1.7</a>, the s
 
 ```bash
 git clone https://github.com/thorwhalen/idiom && cd idiom
-git checkout db2b914b2fdb0fc89e0deb0174366caf5845493a
+git checkout 6cd153a1b329c83a39db0f1c1f29ce2b5184f80e
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

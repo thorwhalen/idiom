@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T19:56:57Z",
+  "built_at": "2026-11-22T21:58:23Z",
   "package": {
     "name": "idiom",
     "version": "0.1.7",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "db2b914b2fdb0fc89e0deb0174366caf5845493a",
-    "short_commit": "db2b914",
+    "commit": "6cd153a1b329c83a39db0f1c1f29ce2b5184f80e",
+    "short_commit": "6cd153a",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/idiom",
-    "commit_url": "https://github.com/thorwhalen/idiom/commit/db2b914b2fdb0fc89e0deb0174366caf5845493a",
+    "commit_url": "https://github.com/thorwhalen/idiom/commit/6cd153a1b329c83a39db0f1c1f29ce2b5184f80e",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/idiom",
-    "sha": "db2b914b2fdb0fc89e0deb0174366caf5845493a",
+    "sha": "6cd153a1b329c83a39db0f1c1f29ce2b5184f80e",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45063449053",
-    "run_url": "https://github.com/thorwhalen/idiom/actions/runs/45063449053",
+    "run_id": "45074855422",
+    "run_url": "https://github.com/thorwhalen/idiom/actions/runs/45074855422",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -64,7 +64,7 @@
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/idiom && cd idiom\ngit checkout db2b914b2fdb0fc89e0deb0174366caf5845493a\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/idiom && cd idiom\ngit checkout 6cd153a1b329c83a39db0f1c1f29ce2b5184f80e\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

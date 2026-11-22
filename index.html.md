@@ -4,7 +4,11 @@
 
 Access and operations with word2vec data
 
-To install:	`pip install idiom`
+To install:
+
+```default
+pip install idiom
+```
 
 For more NLP work, see [mood](https://github.com/infinvest/mood/) and [lexis](https://github.com/thorwhalen/lexis/).
 
@@ -25,6 +29,7 @@ The `idiom` package provides access to word vector data and useful functions to 
 
 You can find the closest words to a given word using the `closest_words` function:
 
+<!-- wads-docs: skip needs the packaged frequency file (idiom#8) and a ~1 GB fastText download -->
 ```python
 from idiom import closest_words
 
@@ -37,6 +42,7 @@ print(closest_words('mad', k=10, search_words=starts_with_L))
 
 You can access the most frequent words using the `most_frequent_words` function:
 
+<!-- wads-docs: skip needs the packaged frequency file (idiom#8) -->
 ```python
 from idiom import most_frequent_words
 
@@ -49,6 +55,7 @@ print(frequent_words)
 
 You can load and work with pre-trained word vectors using the `WordVec` class:
 
+<!-- wads-docs: skip needs fastText word vectors (large download) -->
 ```python
 from idiom import WordVec
 
@@ -64,6 +71,7 @@ print(distance)
 
 You can compute different types of IDF values using the `_IDF` class:
 
+<!-- wads-docs: skip needs the packaged frequency file (idiom#8) -->
 ```python
 from idiom import idf
 
