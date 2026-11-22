@@ -2,16 +2,18 @@
 
 # About this build
 
-This documentation was built on **2026-11-22 21:58 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/6cd153a1b329c83a39db0f1c1f29ce2b5184f80e"><code>6cd153a</code></a> on branch <code>master</code>, for **idiom 0.1.7** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 23:11 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/b20a0cd0936c6425d2e33cebab822d8fdb71a79b"><code>b20a0cd</code></a> on branch <code>master</code>, for **idiom 0.1.7** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.7) is behind the latest release on PyPI (0.1.8): `pip install idiom` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/6cd153a1b329c83a39db0f1c1f29ce2b5184f80e"><code>6cd153a1b329c83a39db0f1c1f29ce2b5184f80e</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/b20a0cd0936c6425d2e33cebab822d8fdb71a79b"><code>b20a0cd0936c6425d2e33cebab822d8fdb71a79b</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -22,9 +24,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/idiom</code>                                                              |
-| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45074855422">45074855422</a>     |
+| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45081729259">45081729259</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>6cd153a1b329c83a39db0f1c1f29ce2b5184f80e</code> (in the history of the built commit) |
+| Event commit | <code>b20a0cd0936c6425d2e33cebab822d8fdb71a79b</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -49,13 +51,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/idiom/0.1.7/">0.1.7</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/idiom/0.1.8/">0.1.8</a>, newer than the documented version (0.1.7).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/idiom && cd idiom
-git checkout 6cd153a1b329c83a39db0f1c1f29ce2b5184f80e
+git checkout b20a0cd0936c6425d2e33cebab822d8fdb71a79b
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

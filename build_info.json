@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T21:58:23Z",
+  "built_at": "2026-11-22T23:11:54Z",
   "package": {
     "name": "idiom",
     "version": "0.1.7",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "6cd153a1b329c83a39db0f1c1f29ce2b5184f80e",
-    "short_commit": "6cd153a",
+    "commit": "b20a0cd0936c6425d2e33cebab822d8fdb71a79b",
+    "short_commit": "b20a0cd",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/idiom",
-    "commit_url": "https://github.com/thorwhalen/idiom/commit/6cd153a1b329c83a39db0f1c1f29ce2b5184f80e",
+    "commit_url": "https://github.com/thorwhalen/idiom/commit/b20a0cd0936c6425d2e33cebab822d8fdb71a79b",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/idiom",
-    "sha": "6cd153a1b329c83a39db0f1c1f29ce2b5184f80e",
+    "sha": "b20a0cd0936c6425d2e33cebab822d8fdb71a79b",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45074855422",
-    "run_url": "https://github.com/thorwhalen/idiom/actions/runs/45074855422",
+    "run_id": "45081729259",
+    "run_url": "https://github.com/thorwhalen/idiom/actions/runs/45081729259",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,14 +60,16 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.7",
-    "relation": "same",
+    "latest": "0.1.8",
+    "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/idiom && cd idiom\ngit checkout 6cd153a1b329c83a39db0f1c1f29ce2b5184f80e\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/idiom && cd idiom\ngit checkout b20a0cd0936c6425d2e33cebab822d8fdb71a79b\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": true,
-    "notes": []
+    "aligned": false,
+    "notes": [
+      "The documented version (0.1.7) is behind the latest release on PyPI (0.1.8): `pip install idiom` gives newer code than these docs describe."
+    ]
   }
 }
