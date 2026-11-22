@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="idiom.html.md" rel="alternate" type="text/markdown"/>
+<link href="../llms.txt" rel="describedby" type="text/markdown"/>
+<link href="idiom.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby"/>
+<title>idiom</title>
+<meta content="idiom" property="og:title"/>
+<meta content="idiom" name="twitter:title"/>
+<link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=009055c6" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx_autodoc_typehints.css?v=057ac668" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/epythet.css?v=ee8382f8" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="idiom.high_dims.html" rel="next" title="idiom.high_dims"/>
+<link href="../api.html" rel="prev" title="API reference"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">idiom</span>
+</a><nav class="flex items-center gap-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="https://github.com/thorwhalen/idiom" rel="noopener nofollow">GitHub</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">idiom</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="flex md:hidden flex-col font-medium mt-4">
+<a href="https://github.com/thorwhalen/idiom" rel="nofollow noopener">GitHub</a>
+</nav><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../api.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="current reference internal expandable" href="#">idiom<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="idiom.high_dims.html">idiom.high_dims</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">idiom</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../api.html">API reference</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">idiom</span>
+</nav>
+<div id="content" role="main">
+<section id="module-idiom">
+<span id="idiom"></span><h1>idiom<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#module-idiom">¶</a></h1>
+<p>Access to wordvec data and useful functions that use it.</p>
+<p class="rubric">Module Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.idf" title="idiom.idf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">idf</span></code></a></p></td>
+<td><p>factor[word] = log(N / (1 + count[word])), where N is the total number of documents in the corpus.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.closest_words" title="idiom.closest_words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_words</span></code></a>(word[, k, search_words, ...])</p></td>
+<td><p>Search words related to a give word.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cosine</span></code>(x, y)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">english_word2vec_stream</span></code>([word_filt, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_english_word2vec_zip_filepath</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_singular</span></code>(word)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#idiom.get_singular_w_inflect" title="idiom.get_singular_w_inflect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_singular_w_inflect</span></code></a>(word)</p></td>
+<td><p>Get the singular form of a word using inflect</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.get_singular_w_nltk" title="idiom.get_singular_w_nltk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_singular_w_nltk</span></code></a>(word)</p></td>
+<td><p>Get the singular form of a word using nltk's wordnet</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#idiom.get_vec_of_word" title="idiom.get_vec_of_word"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vec_of_word</span></code></a>([corpus])</p></td>
+<td><p>Get a word_2_vec dict given an alias name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_to_raw_word_vec</span></code>(line[, encoding, errors])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mk_tokenizer</span></code>(tokenizer)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.most_frequent_words" title="idiom.most_frequent_words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_frequent_words</span></code></a>([max_n_words])</p></td>
+<td><p>The list of most frequent words ordered by most frequent first.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#idiom.most_frequent_words_set" title="idiom.most_frequent_words_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">most_frequent_words_set</span></code></a>([max_n_words])</p></td>
+<td><p>The set of most frequent words.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vec_of_word_default_factory</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_and_vecs</span></code>(fp)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_count_df</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#idiom.word_frequencies" title="idiom.word_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_frequencies</span></code></a>()</p></td>
+<td><p>The set of most frequent words.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_frequency_streams_of_zip</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.SearchOld" title="idiom.SearchOld"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SearchOld</span></code></a>([wordvec_zip_filepath, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#idiom.StreamsOfZip" title="idiom.StreamsOfZip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StreamsOfZip</span></code></a>(zip_file[, prefix, open_kws])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.WordRawVecCreek" title="idiom.WordRawVecCreek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WordRawVecCreek</span></code></a>(stream)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#idiom.WordVec" title="idiom.WordVec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WordVec</span></code></a>([vec_of_word])</p></td>
+<td><p>Terms:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.WordVecCreek" title="idiom.WordVecCreek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WordVecCreek</span></code></a>(stream[, word_filt])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#idiom.WordVecSearch" title="idiom.WordVecSearch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WordVecSearch</span></code></a>([word_vec, n_neighbors])</p></td>
+<td><p>Make a search engine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#idiom.WordVecsOfZip" title="idiom.WordVecsOfZip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WordVecsOfZip</span></code></a>(zip_file[, prefix, open_kws])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="idiom.SearchOld">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">SearchOld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wordvec_zip_filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wordvec_name_in_zip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'wiki-news-300d-1M-subword.vec'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">37</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#SearchOld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.SearchOld" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.SearchOld'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<p class="rubric">Example</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">zip_filepath = '/D/Dropbox/_odata/misc/wiki-news-300d-1M-subword.vec.zip'
+</span><span id="line-2">
+</span><span id="line-3">import pandas as pd
+</span><span id="line-4">df = pd.read_excel('/Users/twhalen/Downloads/pypi package names.xlsx')
+</span><span id="line-5">target_words = set(df.word)
+</span><span id="line-6">
+</span><span id="line-7">from grub.examples.pypi import Search
+</span><span id="line-8">
+</span><span id="line-9">s = Search(zip_filepath, search_words=target_words)
+</span><span id="line-10">s.search('search for the right name')
+</span></code></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.SearchOld.tokenizer">
+<span class="sig-name descname"><span class="pre">tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.SearchOld.tokenizer" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.SearchOld.tokenizer'">¶</a></dt>
+<dd><p>Return a list of all non-overlapping matches of pattern in string.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="idiom.StreamsOfZip">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">StreamsOfZip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#StreamsOfZip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.StreamsOfZip" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.StreamsOfZip'">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FileStreamsOfZip</span></code></p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="idiom.WordRawVecCreek">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordRawVecCreek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordRawVecCreek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordRawVecCreek" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordRawVecCreek'">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Creek</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.WordRawVecCreek.data_to_obj">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">data_to_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strict'</span></span></em><span class="sig-paren">)</span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordRawVecCreek.data_to_obj" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordRawVecCreek.data_to_obj'">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">x</span></code> unchanged.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.WordRawVecCreek.pre_iter">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pre_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordRawVecCreek.pre_iter" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordRawVecCreek.pre_iter'">¶</a></dt>
+<dd><p>Skip the first <code class="docutils literal notranslate"><span class="pre">n</span></code> items of <code class="docutils literal notranslate"><span class="pre">instance</span></code>.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="idiom.WordVec">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec_of_word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">vec_of_word_default_factory()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVec" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVec'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<p>Terms:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>query is anything (usually a string) that can be fed to tokenizer to product a list of tokens</p></li>
+<li><p>words are tokens that are contained in the vec_of_word Mapping (keys)</p></li>
+<li><dl class="simple">
+<dt>vec is a vector (from the same space as vec_of_word values): Used as a finger print of a query</dt><dd><p>(through it’s tokenization and a formula on the corresponding word’s vectors)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If using a non-dict vec_of_word mapping, make sure the __contains__ is efficient, or processing will be slow.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">w = WordVec(vec_of_word=wv)
+</span><span id="line-2">assert w.dist('france capital', 'paris') &lt; w.dist('france capital', 'rome')
+</span><span id="line-3">assert w.dist('italy capital', 'rome') &lt; w.dist('italy capital', 'paris')
+</span></code></pre></div>
+</div>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.WordVec.dist">
+<span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec.dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVec.dist" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVec.dist'">¶</a></dt>
+<dd><p>Cosine distance between two queries (through their corresponding vectors)</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.WordVec.query_to_vec">
+<span class="sig-name descname"><span class="pre">query_to_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVec.query_to_vec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVec.query_to_vec" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVec.query_to_vec'">¶</a></dt>
+<dd><p>The vector computed from a query (process is query-&gt;tokens-&gt;words-&gt;vecs-&gt;mean).
+Note that a query that leads to an empty list of words will result in the mean of all vectors in vec_to_word</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="idiom.WordVecCreek">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVecCreek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_filt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecCreek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVecCreek" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVecCreek'">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Creek</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.WordVecCreek.data_to_obj">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">data_to_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wv</span></span></em><span class="sig-paren">)</span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVecCreek.data_to_obj" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVecCreek.data_to_obj'">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">x</span></code> unchanged.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.WordVecCreek.pre_iter">
+<span class="sig-name descname"><span class="pre">pre_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecCreek.pre_iter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVecCreek.pre_iter" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVecCreek.pre_iter'">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">x</span></code> unchanged.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="idiom.WordVecSearch">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVecSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_vec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">knn_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVecSearch" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVecSearch'">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<p>Make a search engine.
+Trains on a corpus of vectors (or {word: vector,…} mapping</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="idiom.WordVecSearch.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecSearch.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVecSearch.fit" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVecSearch.fit'">¶</a></dt>
+<dd><p>Fit on the given corpus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>corpus</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Union</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>, <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>, <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>]</span>) – <p>A Mapping or iterable whose values we will fit on</p>
+<ul class="simple">
+<li><p>corpus values must be valid self.word_vec arguments (usually strings)</p></li>
+<li><p>corpus keys (or indices, if corpus wasn’t a Mapping) will be used in results of search</p></li>
+<li><p>if not specified, will default to word_vec keys</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="idiom.WordVecsOfZip">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">WordVecsOfZip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#WordVecsOfZip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.WordVecsOfZip" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.WordVecsOfZip'">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Store</span></code></p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="idiom.closest_words">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">closest_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec_of_word</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#closest_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.closest_words" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.closest_words'">¶</a></dt>
+<dd><p>Search words related to a give word.
+Given a word, search for the <code class="code docutils literal notranslate"><span class="pre">k</span></code> closest words to it from a search corpus
+(which may just be the wordvec words filtered for specific patterns).</p>
+<p>For example, find the closest 10 words to ‘mad’ that start with an L.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">starts_with_L</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'l'</span><span class="p">)</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">closest_words</span><span class="p">(</span><span class="s1">'mad'</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">search_words</span><span class="o">=</span><span class="n">starts_with_L</span><span class="p">)</span>
+</span><span id="line-3"><span class="go">['lunatic',</span>
+</span><span id="line-4"><span class="go"> 'loony',</span>
+</span><span id="line-5"><span class="go"> 'loather',</span>
+</span><span id="line-6"><span class="go"> 'loathesome',</span>
+</span><span id="line-7"><span class="go"> 'love-sick',</span>
+</span><span id="line-8"><span class="go"> 'loooove',</span>
+</span><span id="line-9"><span class="go"> 'lovestruck',</span>
+</span><span id="line-10"><span class="go"> 'lovesick',</span>
+</span><span id="line-11"><span class="go"> 'luddite',</span>
+</span><span id="line-12"><span class="go"> 'lazy-minded']</span>
+</span></code></pre></div>
+</div>
+<p>Recipe: To avoid errors when giving an explicit list, you may want to filter out
+those words that wordvecs doesn’t have:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">search_words = filter(lambda w: w in wordvecs, search_words)
+</span></code></pre></div>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="idiom.get_singular_w_inflect">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">get_singular_w_inflect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#get_singular_w_inflect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.get_singular_w_inflect" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.get_singular_w_inflect'">¶</a></dt>
+<dd><p>Get the singular form of a word using inflect</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#idiom.get_singular_w_nltk" title="idiom.get_singular_w_nltk"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_singular_w_nltk()</span></code></a>, which creates plurals through a different method,
+(a semantic approach). Once the data is loaded, nltk is faster than the inflect,
+version, but gives less accurate results, since it’s idea of singular is “the
+base concept”.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="idiom.get_singular_w_nltk">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">get_singular_w_nltk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#get_singular_w_nltk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.get_singular_w_nltk" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.get_singular_w_nltk'">¶</a></dt>
+<dd><p>Get the singular form of a word using nltk’s wordnet</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#idiom.get_singular_w_inflect" title="idiom.get_singular_w_inflect"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_singular_w_inflect()</span></code></a>, which creates plurals through a different method,
+(a rule-based approach). Once the data is loaded, nltk is faster than inflect,
+but gives less accurate results, since it’s idea of singular is “the base concept”.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="idiom.get_vec_of_word">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">get_vec_of_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'most_frequent_english'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#get_vec_of_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.get_vec_of_word" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.get_vec_of_word'">¶</a></dt>
+<dd><p>Get a word_2_vec dict given an alias name</p>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="idiom.idf">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">idf</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;idiom._IDF</span> <span class="pre">object&gt;</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.idf" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.idf'">¶</a></dt>
+<dd><p>factor[word] = log(N / (1 + count[word])), where N is the total number of documents in the corpus. This formula is a commonly used variant of IDF in the TF-IDF approach. The logarithmic term ensures that words with very high counts are not penalized too heavily, while still giving a significant weight to words that occur in a small subset of documents.
+Smoothed IDF: factor[word] = log((N + 1) / (1 + count[word])) + 1, where N is the total number of documents in the corpus. This formula is similar to the logarithmic IDF, but with a smoothing term of 1 added to the numerator and denominator. This helps to avoid division by zero when a word appears in all documents, and gives a non-zero weight to all words.
+Probabilistic IDF: factor[word] = log((N - count[word] + 0.5) / (count[word] + 0.5)), where N is the total number of documents in the corpus. This formula is a variant of IDF that takes into account the document frequency of a word, as well as the collection frequency. The term 0.5 is added to the numerator and denominator to avoid division by zero.
+Max IDF: factor[word] = log(N / max(count.values())) - log(1 + count[word]), where N is the total number of documents in the corpus. This formula gives a weight to words based on their inverse document frequency, with a term subtracted to penalize words that occur frequently in a single document. The denominator of the second logarithm ensures that words with zero counts are not penalized too heavily.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Logarithmic IDF</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="idiom.most_frequent_words">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">most_frequent_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_n_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#most_frequent_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.most_frequent_words" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.most_frequent_words'">¶</a></dt>
+<dd><p>The list of most frequent words ordered by most frequent first.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Twice faster than using FilesOfZip and pandas.read_csv</p>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="idiom.most_frequent_words_set">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">most_frequent_words_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_n_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#most_frequent_words_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.most_frequent_words_set" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.most_frequent_words_set'">¶</a></dt>
+<dd><p>The set of most frequent words.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Twice faster than using FilesOfZip and pandas.read_csv</p>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="idiom.word_frequencies">
+<span class="sig-prename descclassname"><span class="pre">idiom.</span></span><span class="sig-name descname"><span class="pre">word_frequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/idiom.html#word_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#idiom.word_frequencies" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#idiom.word_frequencies'">¶</a></dt>
+<dd><p>The set of most frequent words.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Twice faster than using FilesOfZip and pandas.read_csv</p>
+</div>
+</dd></dl>
+<p class="rubric">Modules</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="idiom.high_dims.html#module-idiom.high_dims" title="idiom.high_dims"><code class="xref py py-obj docutils literal notranslate"><span class="pre">high_dims</span></code></a></p></td>
+<td><p>Tools to study high-dimensional statistics.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#idiom.SearchOld'" class="reference internal" href="#idiom.SearchOld"><code class="docutils literal notranslate"><span class="pre">SearchOld</span></code></a><ul>
+<li><a :data-current="activeSection === '#idiom.SearchOld.tokenizer'" class="reference internal" href="#idiom.SearchOld.tokenizer"><code class="docutils literal notranslate"><span class="pre">SearchOld.tokenizer()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#idiom.StreamsOfZip'" class="reference internal" href="#idiom.StreamsOfZip"><code class="docutils literal notranslate"><span class="pre">StreamsOfZip</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.WordRawVecCreek'" class="reference internal" href="#idiom.WordRawVecCreek"><code class="docutils literal notranslate"><span class="pre">WordRawVecCreek</span></code></a><ul>
+<li><a :data-current="activeSection === '#idiom.WordRawVecCreek.data_to_obj'" class="reference internal" href="#idiom.WordRawVecCreek.data_to_obj"><code class="docutils literal notranslate"><span class="pre">WordRawVecCreek.data_to_obj()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.WordRawVecCreek.pre_iter'" class="reference internal" href="#idiom.WordRawVecCreek.pre_iter"><code class="docutils literal notranslate"><span class="pre">WordRawVecCreek.pre_iter()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#idiom.WordVec'" class="reference internal" href="#idiom.WordVec"><code class="docutils literal notranslate"><span class="pre">WordVec</span></code></a><ul>
+<li><a :data-current="activeSection === '#idiom.WordVec.dist'" class="reference internal" href="#idiom.WordVec.dist"><code class="docutils literal notranslate"><span class="pre">WordVec.dist()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.WordVec.query_to_vec'" class="reference internal" href="#idiom.WordVec.query_to_vec"><code class="docutils literal notranslate"><span class="pre">WordVec.query_to_vec()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#idiom.WordVecCreek'" class="reference internal" href="#idiom.WordVecCreek"><code class="docutils literal notranslate"><span class="pre">WordVecCreek</span></code></a><ul>
+<li><a :data-current="activeSection === '#idiom.WordVecCreek.data_to_obj'" class="reference internal" href="#idiom.WordVecCreek.data_to_obj"><code class="docutils literal notranslate"><span class="pre">WordVecCreek.data_to_obj()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.WordVecCreek.pre_iter'" class="reference internal" href="#idiom.WordVecCreek.pre_iter"><code class="docutils literal notranslate"><span class="pre">WordVecCreek.pre_iter()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#idiom.WordVecSearch'" class="reference internal" href="#idiom.WordVecSearch"><code class="docutils literal notranslate"><span class="pre">WordVecSearch</span></code></a><ul>
+<li><a :data-current="activeSection === '#idiom.WordVecSearch.fit'" class="reference internal" href="#idiom.WordVecSearch.fit"><code class="docutils literal notranslate"><span class="pre">WordVecSearch.fit()</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#idiom.WordVecsOfZip'" class="reference internal" href="#idiom.WordVecsOfZip"><code class="docutils literal notranslate"><span class="pre">WordVecsOfZip</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.closest_words'" class="reference internal" href="#idiom.closest_words"><code class="docutils literal notranslate"><span class="pre">closest_words()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.get_singular_w_inflect'" class="reference internal" href="#idiom.get_singular_w_inflect"><code class="docutils literal notranslate"><span class="pre">get_singular_w_inflect()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.get_singular_w_nltk'" class="reference internal" href="#idiom.get_singular_w_nltk"><code class="docutils literal notranslate"><span class="pre">get_singular_w_nltk()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.get_vec_of_word'" class="reference internal" href="#idiom.get_vec_of_word"><code class="docutils literal notranslate"><span class="pre">get_vec_of_word()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.idf'" class="reference internal" href="#idiom.idf"><code class="docutils literal notranslate"><span class="pre">idf</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.most_frequent_words'" class="reference internal" href="#idiom.most_frequent_words"><code class="docutils literal notranslate"><span class="pre">most_frequent_words()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.most_frequent_words_set'" class="reference internal" href="#idiom.most_frequent_words_set"><code class="docutils literal notranslate"><span class="pre">most_frequent_words_set()</span></code></a></li>
+<li><a :data-current="activeSection === '#idiom.word_frequencies'" class="reference internal" href="#idiom.word_frequencies"><code class="docutils literal notranslate"><span class="pre">word_frequencies()</span></code></a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left"></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=360bc84d"></script>
+<script src="../_static/doctools.js?v=fd6eb6e6"></script>
+<script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=fd10adb8"></script>
+<script defer="defer" src="../_static/theme.js?v=49cc6205"></script>
+</body>
+</html>

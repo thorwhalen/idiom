@@ -1,0 +1,20 @@
+# idiom
+
+> Access and operations with word2vec data
+
+
+## Pages
+
+- [idiom](index.html.md): Access and operations with word2vec data
+- [API reference](api.html.md): | &#96;idiom&#96;   | Access to wordvec data and useful functions that use it.   |
+- [idiom](_autosummary/idiom.html.md): Access to wordvec data and useful functions that use it.
+- [idiom.high_dims](_autosummary/idiom.high_dims.html.md): Tools to study high-dimensional statistics.
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 14:59 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+
+## Optional
+
+- [idiom.md](idiom.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

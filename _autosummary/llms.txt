@@ -1,0 +1,13 @@
+# idiom
+
+> Access and operations with word2vec data
+
+
+## Pages in this subsection
+
+- [idiom](idiom.html.md): Access to wordvec data and useful functions that use it.
+- [idiom.high_dims](idiom.high_dims.html.md): Tools to study high-dimensional statistics.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

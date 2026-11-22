@@ -1,0 +1,53 @@
+﻿idiom
+=====
+
+.. automodule:: idiom
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      idf
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      closest_words
+      cosine
+      english_word2vec_stream
+      get_english_word2vec_zip_filepath
+      get_singular
+      get_singular_w_inflect
+      get_singular_w_nltk
+      get_vec_of_word
+      line_to_raw_word_vec
+      mk_tokenizer
+      most_frequent_words
+      most_frequent_words_set
+      vec_of_word_default_factory
+      word_and_vecs
+      word_count_df
+      word_frequencies
+      word_frequency_streams_of_zip
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SearchOld
+      StreamsOfZip
+      WordRawVecCreek
+      WordVec
+      WordVecCreek
+      WordVecSearch
+      WordVecsOfZip
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   high_dims

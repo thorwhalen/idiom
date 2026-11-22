@@ -1,0 +1,26 @@
+idiom.high\_dims
+================
+
+.. automodule:: idiom.high_dims
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      convert_angle
+      convert_epsilon_angle
+      expected_dot_product_variance
+      generate_random_unit_vectors
+      measure_pairwise_angles
+      nearly_orthogonal_vectors
+      nearly_orthogonal_vectors_equiangular
+      nearly_orthogonal_vectors_johnson_lindenstrauss
+      run_high_dim_experiment
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      HighDimStats
+   

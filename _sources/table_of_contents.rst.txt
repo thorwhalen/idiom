@@ -1,6 +1,0 @@
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   module_docs/idiom
-   module_docs/idiom/high_dimensional_stats
