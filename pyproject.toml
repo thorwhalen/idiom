@@ -17,6 +17,9 @@ authors = [
 ]
 dependencies = [
     "numpy",
+    "pandas",
+    "scipy",
+    "importlib_resources",
     "scikit-learn",
     "py2store",
     "graze",
