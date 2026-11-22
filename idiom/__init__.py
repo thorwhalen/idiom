@@ -115,7 +115,7 @@ def most_frequent_words_set(max_n_words=100_000):
     return set(most_frequent_words(max_n_words))
 
 
-def _always_true(x):
+def _always_true(x) -> bool:
     return True
 
 
@@ -233,7 +233,7 @@ class WordRawVecCreek(Creek):
 
 
 class WordVecCreek(Creek):
-    def __init__(self, stream, word_filt=None):
+    def __init__(self, stream, word_filt=None) -> None:
         super().__init__(stream)
         if not callable(word_filt):
             word_filt = partial(filter, word_filt)
@@ -421,7 +421,7 @@ class WordVec(Mapping):
     def vec_matrix(self, words):
         return np.array([self.vec_of_word.get(w, None) for w in words])
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         tokenizer_name = getattr(self.tokenizer, "__name__", "unnamed_tokenizer")
         return (
             f"{self.__class__.__name__}("
@@ -435,10 +435,10 @@ class WordVec(Mapping):
     def __getitem__(self, k):
         return self.vec_of_word[k]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.vec_of_word)
 
-    def __contains__(self, k):
+    def __contains__(self, k) -> bool:
         return k in self.vec_of_word
 
     def __iter__(self):
@@ -456,7 +456,7 @@ class WordVecSearch:
     corpus_ = None
     corpus_keys_array_ = None
 
-    def __init__(self, word_vec: WordVec = None, n_neighbors=10, **knn_kwargs):
+    def __init__(self, word_vec: WordVec = None, n_neighbors=10, **knn_kwargs) -> None:
         """
 
         :param word_vec: A WordVec object that will
@@ -549,7 +549,7 @@ class SearchOld:
         wordvec_name_in_zip="wiki-news-300d-1M-subword.vec",
         n_neighbors=37,
         verbose=False,
-    ):
+    ) -> None:
         self.wordvec_zip_filepath = (
             wordvec_zip_filepath or get_english_word2vec_zip_filepath()
         )

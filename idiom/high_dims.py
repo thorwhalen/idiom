@@ -261,7 +261,9 @@ from scipy.spatial.distance import pdist, squareform
 
 
 class HighDimStats:
-    def __init__(self, data=None, dim=100, n_points=1000, generator=np.random.uniform):
+    def __init__(
+        self, data=None, dim=100, n_points=1000, generator=np.random.uniform
+    ) -> None:
         """
         Initialize with data or generate random high-dimensional points.
 
