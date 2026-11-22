@@ -73,11 +73,6 @@ def test_wordvec_search():
     assert keys[0][0] == "car" and dist[0][0] == pytest.approx(0, abs=1e-9)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    raises=TypeError,
-    reason="WordVecSearch.fit maps word_vec over corpus keys, not values, contradicting its docstring",
-)
 def test_wordvec_search_fit_on_corpus_values():
     s = WordVecSearch(WordVec(vec_of_word=VECS), n_neighbors=1).fit(["cat", "car"])
     assert s("truck")[0][0] == 1  # corpus keys are indices
@@ -89,11 +84,6 @@ def test_search_unfit_warns():
         s.search("cat")
 
 
-@pytest.mark.xfail(
-    strict=True,
-    raises=ValueError,
-    reason="get_vec_of_word never returns: valid corpus aliases fall through to the ValueError",
-)
 def test_get_vec_of_word_alias(monkeypatch):
     monkeypatch.setattr(idiom, "_get_vec_of_word", lambda corpus: VECS)
     assert idiom.get_vec_of_word("most_frequent") is VECS
