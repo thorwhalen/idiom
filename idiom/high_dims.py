@@ -29,9 +29,9 @@ def convert_angle(
     :param output_unit: The unit to convert to ('degrees', 'radians', 'cosine').
     :return: The converted angle.
 
-    >>> convert_angle(90, input_unit='degrees', output_unit='radians')  # doctest: +ELLIPSIS
+    >>> float(convert_angle(90, input_unit='degrees', output_unit='radians'))  # doctest: +ELLIPSIS
     1.570796...
-    >>> convert_angle(0.5, input_unit='radians', output_unit='degrees')  # doctest: +ELLIPSIS
+    >>> float(convert_angle(0.5, input_unit='radians', output_unit='degrees'))  # doctest: +ELLIPSIS
     28.6478...
     >>> convert_angle(0, input_unit='degrees', output_unit='cosine')  # doctest: +ELLIPSIS
     1.0
@@ -73,7 +73,7 @@ def convert_epsilon_angle(
     :param output_unit: The unit to convert the epsilon angle to ('degrees', 'radians', 'cosine').
     :return: The converted epsilon angle.
 
-    >>> convert_epsilon_angle(0, input_unit='degrees', output_unit='radians')  # doctest: +ELLIPSIS
+    >>> float(convert_epsilon_angle(0, input_unit='degrees', output_unit='radians'))  # doctest: +ELLIPSIS
     1.5707...
     """
     straight_angle = {'degrees': 90, 'radians': np.pi / 2, 'cosine': -1}[input_unit]
@@ -241,7 +241,7 @@ def measure_pairwise_angles(vectors: np.ndarray) -> np.ndarray:
 
     >>> vecs = generate_random_unit_vectors(10, 5)
     >>> angles = measure_pairwise_angles(vecs)
-    >>> (0 <= angles).all() and (angles <= 180).all()
+    >>> bool((0 <= angles).all() and (angles <= 180).all())
     True
     """
     num_vectors = vectors.shape[0]
