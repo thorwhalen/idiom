@@ -292,13 +292,13 @@ n-dimensional.</p>
 Euclidean space that can be chosen so that every pair of distinct vectors has an inner product (cosine
 of the angle between them) bounded by ε, i.e.</p>
 <blockquote>
-<div><p><a href="#id1"><span class="problematic" id="id2">|v_i · v_j|</span></a> &lt;= epsilon,   for all i ≠ j.</p>
+<div><p><code class="docutils literal notranslate"><span class="pre">|v_i</span> <span class="pre">·</span> <span class="pre">v_j|</span> <span class="pre">&lt;=</span> <span class="pre">epsilon</span></code>,   for all i ≠ j.</p>
 </div></blockquote>
 <p>Special cases:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>If epsilon = 0, the vectors must be exactly orthogonal, so the maximum is exactly n.</p></li>
-<li><p>If epsilon &gt;= 1, every pair of unit vectors trivially satisfies <a href="#id3"><span class="problematic" id="id4">|v_i · v_j|</span></a> ≤ 1, so one may
+<li><p>If epsilon &gt;= 1, every pair of unit vectors trivially satisfies <code class="docutils literal notranslate"><span class="pre">|v_i</span> <span class="pre">·</span> <span class="pre">v_j|</span> <span class="pre">≤</span> <span class="pre">1</span></code>, so one may
 pack infinitely many such vectors.</p></li>
 </ul>
 </div></blockquote>
@@ -340,16 +340,21 @@ bound yield a stronger lower bound of the form</p>
 <dd class="field-odd"><p>An estimate for the maximum number of nearly orthogonal unit vectors.</p>
 </dd>
 </dl>
-<p># &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(100, 0.1)
-# 100
-# &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(1000, 0.1)
-# 1000
-# &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(10000, 0.1)
-# 5184705528587109793792</p>
-<p># With different epsilon units:</p>
-<p># &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit=’degrees’)
-# 100000
-# &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit=’degrees’)</p>
+<p>Examples (not run as doctests; the numbers are unverified):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span id="line-2"><span class="c1"># 100</span>
+</span><span id="line-3"><span class="n">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span id="line-4"><span class="c1"># 1000</span>
+</span><span id="line-5"><span class="n">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span id="line-6"><span class="c1"># 5184705528587109793792</span>
+</span><span id="line-7">
+</span><span id="line-8"><span class="c1"># With different epsilon units:</span>
+</span><span id="line-9">
+</span><span id="line-10"><span class="n">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="o">=</span><span class="s1">'degrees'</span><span class="p">)</span>
+</span><span id="line-11"><span class="c1"># 100000</span>
+</span><span id="line-12"><span class="n">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="o">=</span><span class="s1">'degrees'</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="idiom.high_dims.nearly_orthogonal_vectors_johnson_lindenstrauss">
@@ -372,12 +377,15 @@ space given an orthogonality tolerance epsilon.</p>
 <dd class="field-odd"><p>Estimated number of nearly orthogonal vectors</p>
 </dd>
 </dl>
-<p># &gt;&gt;&gt; nearly_orthogonal_vectors_johnson_lindenstrauss(100, 0.1)
-# 100
-# &gt;&gt;&gt; nearly_orthogonal_vectors_johnson_lindenstrauss(1000, 0.1)
-# 1484
-# &gt;&gt;&gt; nearly_orthogonal_vectors_johnson_lindenstrauss(10000, 0.1)
-# 51847055285871095840768</p>
+<p>Examples (not run as doctests; the numbers are unverified):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">nearly_orthogonal_vectors_johnson_lindenstrauss</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span id="line-2"><span class="c1"># 100</span>
+</span><span id="line-3"><span class="n">nearly_orthogonal_vectors_johnson_lindenstrauss</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span id="line-4"><span class="c1"># 1484</span>
+</span><span id="line-5"><span class="n">nearly_orthogonal_vectors_johnson_lindenstrauss</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span id="line-6"><span class="c1"># 51847055285871095840768</span>
+</span></code></pre></div>
+</div>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="idiom.high_dims.run_high_dim_experiment">
@@ -425,7 +433,7 @@ space given an orthogonality tolerance epsilon.</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
+<script src="../_static/documentation_options.js?v=22607128"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

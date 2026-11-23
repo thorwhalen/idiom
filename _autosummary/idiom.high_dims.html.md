@@ -127,22 +127,12 @@ Estimates a (provable) lower bound for the maximum number N(ε, n) of unit vecto
 Euclidean space that can be chosen so that every pair of distinct vectors has an inner product (cosine
 of the angle between them) bounded by ε, i.e.
 
-> ```
-> |v_i · v_j|
-> ```
-
->  <= epsilon,   for all i ≠ j.
+> `|v_i · v_j| <= epsilon`,   for all i ≠ j.
 
 Special cases:
 
 > - If epsilon = 0, the vectors must be exactly orthogonal, so the maximum is exactly n.
-> - If epsilon >= 1, every pair of unit vectors trivially satisfies 
-
->   ```
->   |v_i · v_j|
->   ```
-
->    ≤ 1, so one may
+> - If epsilon >= 1, every pair of unit vectors trivially satisfies `|v_i · v_j| ≤ 1`, so one may
 >   pack infinitely many such vectors.
 
 For 0 < epsilon < 1, one standard (Johnson–Lindenstrauss) argument shows one can pack roughly
@@ -177,18 +167,22 @@ This is an asymptotic (existential) lower bound and should be considered a heuri
 * **Returns:**
   An estimate for the maximum number of nearly orthogonal unit vectors.
 
-# >>> nearly_orthogonal_vectors_equiangular(100, 0.1)
+Examples (not run as doctests; the numbers are unverified):
+
+```python
+nearly_orthogonal_vectors_equiangular(100, 0.1)
 # 100
-# >>> nearly_orthogonal_vectors_equiangular(1000, 0.1)
+nearly_orthogonal_vectors_equiangular(1000, 0.1)
 # 1000
-# >>> nearly_orthogonal_vectors_equiangular(10000, 0.1)
+nearly_orthogonal_vectors_equiangular(10000, 0.1)
 # 5184705528587109793792
 
 # With different epsilon units:
 
-# >>> nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit=’degrees’)
+nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit='degrees')
 # 100000
-# >>> nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit=’degrees’)
+nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit='degrees')
+```
 
 ### idiom.high_dims.nearly_orthogonal_vectors_johnson_lindenstrauss(n, epsilon=0.01, epsilon_unit='cosine')
 
@@ -206,12 +200,16 @@ See [https://en.wikipedia.org/wiki/Johnson%E2%80%93Lindenstrauss_lemma#Statement
 * **Returns:**
   Estimated number of nearly orthogonal vectors
 
-# >>> nearly_orthogonal_vectors_johnson_lindenstrauss(100, 0.1)
+Examples (not run as doctests; the numbers are unverified):
+
+```python
+nearly_orthogonal_vectors_johnson_lindenstrauss(100, 0.1)
 # 100
-# >>> nearly_orthogonal_vectors_johnson_lindenstrauss(1000, 0.1)
+nearly_orthogonal_vectors_johnson_lindenstrauss(1000, 0.1)
 # 1484
-# >>> nearly_orthogonal_vectors_johnson_lindenstrauss(10000, 0.1)
+nearly_orthogonal_vectors_johnson_lindenstrauss(10000, 0.1)
 # 51847055285871095840768
+```
 
 ### idiom.high_dims.run_high_dim_experiment(dims=(2, 3, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000), n_points=5000, generator=<bound method RandomState.uniform of RandomState(MT19937)>)
 

@@ -1,36 +1,36 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T23:11:54Z",
+  "built_at": "2026-11-23T07:29:47Z",
   "package": {
     "name": "idiom",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "display_name": "idiom",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "b20a0cd0936c6425d2e33cebab822d8fdb71a79b",
-    "short_commit": "b20a0cd",
+    "commit": "1bc8e313b3e6f2602e7c332732207d2ff85ab679",
+    "short_commit": "1bc8e31",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/idiom",
-    "commit_url": "https://github.com/thorwhalen/idiom/commit/b20a0cd0936c6425d2e33cebab822d8fdb71a79b",
+    "commit_url": "https://github.com/thorwhalen/idiom/commit/1bc8e313b3e6f2602e7c332732207d2ff85ab679",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/idiom",
-    "sha": "b20a0cd0936c6425d2e33cebab822d8fdb71a79b",
+    "sha": "1bc8e313b3e6f2602e7c332732207d2ff85ab679",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45081729259",
-    "run_url": "https://github.com/thorwhalen/idiom/actions/runs/45081729259",
+    "run_id": "45131274018",
+    "run_url": "https://github.com/thorwhalen/idiom/actions/runs/45131274018",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.23",
+    "epythet": "0.2.24",
     "sphinx": "9.1.1",
     "docutils": "0.22.4",
     "python": "3.12.16"
@@ -61,15 +61,13 @@
   "pypi": {
     "checked": true,
     "latest": "0.1.8",
-    "relation": "behind",
+    "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/idiom && cd idiom\ngit checkout b20a0cd0936c6425d2e33cebab822d8fdb71a79b\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/idiom && cd idiom\ngit checkout 1bc8e313b3e6f2602e7c332732207d2ff85ab679\npip install \"epythet==0.2.24\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": false,
-    "notes": [
-      "The documented version (0.1.7) is behind the latest release on PyPI (0.1.8): `pip install idiom` gives newer code than these docs describe."
-    ]
+    "aligned": true,
+    "notes": []
   }
 }

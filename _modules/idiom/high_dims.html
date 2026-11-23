@@ -290,291 +290,299 @@
 </span><span id="line-113"><span class="sd">    :return: Estimated number of nearly orthogonal vectors</span>
 </span><span id="line-114">
 </span><span id="line-115">
-</span><span id="line-116"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_johnson_lindenstrauss(100, 0.1)</span>
-</span><span id="line-117"><span class="sd">    # 100</span>
-</span><span id="line-118"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_johnson_lindenstrauss(1000, 0.1)</span>
-</span><span id="line-119"><span class="sd">    # 1484</span>
-</span><span id="line-120"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_johnson_lindenstrauss(10000, 0.1)</span>
-</span><span id="line-121"><span class="sd">    # 51847055285871095840768</span>
-</span><span id="line-122"><span class="sd">    """</span>
-</span><span id="line-123">    <span class="n">warn</span><span class="p">(</span><span class="s2">"Don't believe these numbers. Not sure I got the math right."</span><span class="p">)</span>
-</span><span id="line-124">    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-</span><span id="line-125">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The dimension must be at least 2."</span><span class="p">)</span>
-</span><span id="line-126">    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">convert_epsilon_angle</span><span class="p">(</span>
-</span><span id="line-127">        <span class="n">epsilon</span><span class="p">,</span> <span class="n">input_unit</span><span class="o">=</span><span class="n">epsilon_unit</span><span class="p">,</span> <span class="n">output_unit</span><span class="o">=</span><span class="s2">"cosine"</span>
-</span><span id="line-128">    <span class="p">)</span>
-</span><span id="line-129">    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">))</span></div>
+</span><span id="line-116"><span class="sd">    Examples (not run as doctests; the numbers are unverified):</span>
+</span><span id="line-117">
+</span><span id="line-118"><span class="sd">    .. code-block:: python</span>
+</span><span id="line-119">
+</span><span id="line-120"><span class="sd">        nearly_orthogonal_vectors_johnson_lindenstrauss(100, 0.1)</span>
+</span><span id="line-121"><span class="sd">        # 100</span>
+</span><span id="line-122"><span class="sd">        nearly_orthogonal_vectors_johnson_lindenstrauss(1000, 0.1)</span>
+</span><span id="line-123"><span class="sd">        # 1484</span>
+</span><span id="line-124"><span class="sd">        nearly_orthogonal_vectors_johnson_lindenstrauss(10000, 0.1)</span>
+</span><span id="line-125"><span class="sd">        # 51847055285871095840768</span>
+</span><span id="line-126"><span class="sd">    """</span>
+</span><span id="line-127">    <span class="n">warn</span><span class="p">(</span><span class="s2">"Don't believe these numbers. Not sure I got the math right."</span><span class="p">)</span>
+</span><span id="line-128">    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+</span><span id="line-129">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The dimension must be at least 2."</span><span class="p">)</span>
+</span><span id="line-130">    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">convert_epsilon_angle</span><span class="p">(</span>
+</span><span id="line-131">        <span class="n">epsilon</span><span class="p">,</span> <span class="n">input_unit</span><span class="o">=</span><span class="n">epsilon_unit</span><span class="p">,</span> <span class="n">output_unit</span><span class="o">=</span><span class="s2">"cosine"</span>
+</span><span id="line-132">    <span class="p">)</span>
+</span><span id="line-133">    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">))</span></div>
 
-</span><span id="line-130">
-</span><span id="line-131">
+</span><span id="line-134">
+</span><span id="line-135">
 <div class="viewcode-block" id="nearly_orthogonal_vectors_equiangular">
 <a class="viewcode-back" href="../../_autosummary/idiom.high_dims.html#idiom.high_dims.nearly_orthogonal_vectors_equiangular">[docs]</a>
-</span><span id="line-132"><span class="k">def</span><span class="w"> </span><span class="nf">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span>
-</span><span id="line-133">    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">:</span> <span class="n">AngleUnits</span> <span class="o">=</span> <span class="s2">"cosine"</span>
-</span><span id="line-134"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="line-135"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-136"><span class="sd">    Estimates a (provable) lower bound for the maximum number N(ε, n) of unit vectors in an n-dimensional</span>
-</span><span id="line-137"><span class="sd">    Euclidean space that can be chosen so that every pair of distinct vectors has an inner product (cosine</span>
-</span><span id="line-138"><span class="sd">    of the angle between them) bounded by ε, i.e.</span>
-</span><span id="line-139">
-</span><span id="line-140"><span class="sd">          |v_i · v_j| &lt;= epsilon,   for all i ≠ j.</span>
-</span><span id="line-141">
-</span><span id="line-142"><span class="sd">    Special cases:</span>
-</span><span id="line-143"><span class="sd">      - If epsilon = 0, the vectors must be exactly orthogonal, so the maximum is exactly n.</span>
-</span><span id="line-144"><span class="sd">      - If epsilon &gt;= 1, every pair of unit vectors trivially satisfies |v_i · v_j| ≤ 1, so one may</span>
-</span><span id="line-145"><span class="sd">        pack infinitely many such vectors.</span>
-</span><span id="line-146">
-</span><span id="line-147"><span class="sd">    For 0 &lt; epsilon &lt; 1, one standard (Johnson–Lindenstrauss) argument shows one can pack roughly</span>
-</span><span id="line-148"><span class="sd">          exp((epsilon**2 * n) / 8)</span>
-</span><span id="line-149"><span class="sd">    vectors. However, more refined techniques from spherical coding theory and the Kabatjanskii–Levenstein</span>
-</span><span id="line-150"><span class="sd">    bound yield a stronger lower bound of the form</span>
-</span><span id="line-151"><span class="sd">          N(ε, n) &gt;= exp((epsilon**2 * n) / 2).</span>
-</span><span id="line-152">
-</span><span id="line-153"><span class="sd">    For example, with n ≈ 1500 and epsilon ≈ 0.1 the refined bound gives</span>
-</span><span id="line-154"><span class="sd">          N(0.1, 1500) &gt;= exp((0.1**2 * 1500) / 2) = exp(7.5) ≈ 1800.</span>
-</span><span id="line-155">
-</span><span id="line-156"><span class="sd">    This function returns the larger of the trivial bound (n) and the refined bound exp((epsilon² * n) / 2).</span>
-</span><span id="line-157">
-</span><span id="line-158"><span class="sd">    For more details on these results and their derivations, see, for example,</span>
-</span><span id="line-159"><span class="sd">    "Equiangular lines" on Wikipedia:</span>
-</span><span id="line-160"><span class="sd">      https://en.wikipedia.org/wiki/Equiangular_lines</span>
+</span><span id="line-136"><span class="k">def</span><span class="w"> </span><span class="nf">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span>
+</span><span id="line-137">    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">:</span> <span class="n">AngleUnits</span> <span class="o">=</span> <span class="s2">"cosine"</span>
+</span><span id="line-138"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="line-139"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-140"><span class="sd">    Estimates a (provable) lower bound for the maximum number N(ε, n) of unit vectors in an n-dimensional</span>
+</span><span id="line-141"><span class="sd">    Euclidean space that can be chosen so that every pair of distinct vectors has an inner product (cosine</span>
+</span><span id="line-142"><span class="sd">    of the angle between them) bounded by ε, i.e.</span>
+</span><span id="line-143">
+</span><span id="line-144"><span class="sd">          ``|v_i · v_j| &lt;= epsilon``,   for all i ≠ j.</span>
+</span><span id="line-145">
+</span><span id="line-146"><span class="sd">    Special cases:</span>
+</span><span id="line-147"><span class="sd">      - If epsilon = 0, the vectors must be exactly orthogonal, so the maximum is exactly n.</span>
+</span><span id="line-148"><span class="sd">      - If epsilon &gt;= 1, every pair of unit vectors trivially satisfies ``|v_i · v_j| ≤ 1``, so one may</span>
+</span><span id="line-149"><span class="sd">        pack infinitely many such vectors.</span>
+</span><span id="line-150">
+</span><span id="line-151"><span class="sd">    For 0 &lt; epsilon &lt; 1, one standard (Johnson–Lindenstrauss) argument shows one can pack roughly</span>
+</span><span id="line-152"><span class="sd">          exp((epsilon**2 * n) / 8)</span>
+</span><span id="line-153"><span class="sd">    vectors. However, more refined techniques from spherical coding theory and the Kabatjanskii–Levenstein</span>
+</span><span id="line-154"><span class="sd">    bound yield a stronger lower bound of the form</span>
+</span><span id="line-155"><span class="sd">          N(ε, n) &gt;= exp((epsilon**2 * n) / 2).</span>
+</span><span id="line-156">
+</span><span id="line-157"><span class="sd">    For example, with n ≈ 1500 and epsilon ≈ 0.1 the refined bound gives</span>
+</span><span id="line-158"><span class="sd">          N(0.1, 1500) &gt;= exp((0.1**2 * 1500) / 2) = exp(7.5) ≈ 1800.</span>
+</span><span id="line-159">
+</span><span id="line-160"><span class="sd">    This function returns the larger of the trivial bound (n) and the refined bound exp((epsilon² * n) / 2).</span>
 </span><span id="line-161">
-</span><span id="line-162"><span class="sd">    Note: This is an asymptotic (existential) lower bound and should be considered a heuristic estimate.</span>
-</span><span id="line-163">
-</span><span id="line-164"><span class="sd">    :param n: Dimension of the Euclidean space (n &gt;= 1).</span>
-</span><span id="line-165"><span class="sd">    :param epsilon: Tolerance for “near-orthogonality” (0 &lt;= epsilon &lt; 1).</span>
-</span><span id="line-166"><span class="sd">    :param epsilon_unit: The unit of epsilon ('cosine', 'degrees', or 'radians').</span>
-</span><span id="line-167"><span class="sd">    :return: An estimate for the maximum number of nearly orthogonal unit vectors.</span>
-</span><span id="line-168">
-</span><span id="line-169"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(100, 0.1)</span>
-</span><span id="line-170"><span class="sd">    # 100</span>
-</span><span id="line-171"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(1000, 0.1)</span>
-</span><span id="line-172"><span class="sd">    # 1000</span>
-</span><span id="line-173"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(10000, 0.1)</span>
-</span><span id="line-174"><span class="sd">    # 5184705528587109793792</span>
-</span><span id="line-175">
-</span><span id="line-176"><span class="sd">    # With different epsilon units:</span>
-</span><span id="line-177">
-</span><span id="line-178"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit='degrees')</span>
-</span><span id="line-179"><span class="sd">    # 100000</span>
-</span><span id="line-180"><span class="sd">    # &gt;&gt;&gt; nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit='degrees')</span>
-</span><span id="line-181">
-</span><span id="line-182"><span class="sd">    """</span>
-</span><span id="line-183">    <span class="n">warn</span><span class="p">(</span><span class="s2">"Don't believe these numbers. Not sure I got the math right."</span><span class="p">)</span>
-</span><span id="line-184">    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">convert_epsilon_angle</span><span class="p">(</span>
-</span><span id="line-185">        <span class="n">epsilon</span><span class="p">,</span> <span class="n">input_unit</span><span class="o">=</span><span class="n">epsilon_unit</span><span class="p">,</span> <span class="n">output_unit</span><span class="o">=</span><span class="s2">"cosine"</span>
-</span><span id="line-186">    <span class="p">)</span>
-</span><span id="line-187">    <span class="c1"># If epsilon is 1 or larger, every unit vector trivially satisfies the condition,</span>
-</span><span id="line-188">    <span class="c1"># so the maximum number is unbounded.</span>
-</span><span id="line-189">    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-</span><span id="line-190">        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
-</span><span id="line-191">    <span class="c1"># For epsilon = 0, the only possibility is an orthonormal set.</span>
-</span><span id="line-192">    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="line-193">        <span class="k">return</span> <span class="n">n</span>
-</span><span id="line-194">    <span class="c1"># Using refined spherical coding / Kabatjanskii–Levenstein bound:</span>
-</span><span id="line-195">    <span class="c1"># one can prove that for any fixed ε &gt; 0, one may pack at least</span>
-</span><span id="line-196">    <span class="c1"># N(ε, n) ≥ exp((ε² * n) / 2)</span>
-</span><span id="line-197">    <span class="c1"># (see, e.g., https://en.wikipedia.org/wiki/Equiangular_lines for background)</span>
-</span><span id="line-198">    <span class="n">refined_bound</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-</span><span id="line-199">    <span class="c1"># The trivial bound (an orthonormal set) gives n vectors.</span>
-</span><span id="line-200">    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">refined_bound</span><span class="p">))</span></div>
+</span><span id="line-162"><span class="sd">    For more details on these results and their derivations, see, for example,</span>
+</span><span id="line-163"><span class="sd">    "Equiangular lines" on Wikipedia:</span>
+</span><span id="line-164"><span class="sd">      https://en.wikipedia.org/wiki/Equiangular_lines</span>
+</span><span id="line-165">
+</span><span id="line-166"><span class="sd">    Note: This is an asymptotic (existential) lower bound and should be considered a heuristic estimate.</span>
+</span><span id="line-167">
+</span><span id="line-168"><span class="sd">    :param n: Dimension of the Euclidean space (n &gt;= 1).</span>
+</span><span id="line-169"><span class="sd">    :param epsilon: Tolerance for “near-orthogonality” (0 &lt;= epsilon &lt; 1).</span>
+</span><span id="line-170"><span class="sd">    :param epsilon_unit: The unit of epsilon ('cosine', 'degrees', or 'radians').</span>
+</span><span id="line-171"><span class="sd">    :return: An estimate for the maximum number of nearly orthogonal unit vectors.</span>
+</span><span id="line-172">
+</span><span id="line-173"><span class="sd">    Examples (not run as doctests; the numbers are unverified):</span>
+</span><span id="line-174">
+</span><span id="line-175"><span class="sd">    .. code-block:: python</span>
+</span><span id="line-176">
+</span><span id="line-177"><span class="sd">        nearly_orthogonal_vectors_equiangular(100, 0.1)</span>
+</span><span id="line-178"><span class="sd">        # 100</span>
+</span><span id="line-179"><span class="sd">        nearly_orthogonal_vectors_equiangular(1000, 0.1)</span>
+</span><span id="line-180"><span class="sd">        # 1000</span>
+</span><span id="line-181"><span class="sd">        nearly_orthogonal_vectors_equiangular(10000, 0.1)</span>
+</span><span id="line-182"><span class="sd">        # 5184705528587109793792</span>
+</span><span id="line-183">
+</span><span id="line-184"><span class="sd">        # With different epsilon units:</span>
+</span><span id="line-185">
+</span><span id="line-186"><span class="sd">        nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit='degrees')</span>
+</span><span id="line-187"><span class="sd">        # 100000</span>
+</span><span id="line-188"><span class="sd">        nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit='degrees')</span>
+</span><span id="line-189">
+</span><span id="line-190"><span class="sd">    """</span>
+</span><span id="line-191">    <span class="n">warn</span><span class="p">(</span><span class="s2">"Don't believe these numbers. Not sure I got the math right."</span><span class="p">)</span>
+</span><span id="line-192">    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">convert_epsilon_angle</span><span class="p">(</span>
+</span><span id="line-193">        <span class="n">epsilon</span><span class="p">,</span> <span class="n">input_unit</span><span class="o">=</span><span class="n">epsilon_unit</span><span class="p">,</span> <span class="n">output_unit</span><span class="o">=</span><span class="s2">"cosine"</span>
+</span><span id="line-194">    <span class="p">)</span>
+</span><span id="line-195">    <span class="c1"># If epsilon is 1 or larger, every unit vector trivially satisfies the condition,</span>
+</span><span id="line-196">    <span class="c1"># so the maximum number is unbounded.</span>
+</span><span id="line-197">    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="line-198">        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+</span><span id="line-199">    <span class="c1"># For epsilon = 0, the only possibility is an orthonormal set.</span>
+</span><span id="line-200">    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="line-201">        <span class="k">return</span> <span class="n">n</span>
+</span><span id="line-202">    <span class="c1"># Using refined spherical coding / Kabatjanskii–Levenstein bound:</span>
+</span><span id="line-203">    <span class="c1"># one can prove that for any fixed ε &gt; 0, one may pack at least</span>
+</span><span id="line-204">    <span class="c1"># N(ε, n) ≥ exp((ε² * n) / 2)</span>
+</span><span id="line-205">    <span class="c1"># (see, e.g., https://en.wikipedia.org/wiki/Equiangular_lines for background)</span>
+</span><span id="line-206">    <span class="n">refined_bound</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="line-207">    <span class="c1"># The trivial bound (an orthonormal set) gives n vectors.</span>
+</span><span id="line-208">    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">refined_bound</span><span class="p">))</span></div>
 
-</span><span id="line-201">
-</span><span id="line-202">
+</span><span id="line-209">
+</span><span id="line-210">
 <div class="viewcode-block" id="nearly_orthogonal_vectors">
 <a class="viewcode-back" href="../../_autosummary/idiom.high_dims.html#idiom.high_dims.nearly_orthogonal_vectors">[docs]</a>
-</span><span id="line-203"><span class="k">def</span><span class="w"> </span><span class="nf">nearly_orthogonal_vectors</span><span class="p">(</span>
-</span><span id="line-204">    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">:</span> <span class="n">AngleUnits</span> <span class="o">=</span> <span class="s2">"cosine"</span>
-</span><span id="line-205"><span class="p">):</span>
-</span><span id="line-206"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-207"><span class="sd">    Estimates the min number of nearly orthogonal vectors that can fit in an</span>
-</span><span id="line-208"><span class="sd">    n-dimensional.</span>
-</span><span id="line-209">
-</span><span id="line-210"><span class="sd">    """</span>
-</span><span id="line-211">    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
-</span><span id="line-212">        <span class="p">[</span>
-</span><span id="line-213">            <span class="n">nearly_orthogonal_vectors_johnson_lindenstrauss</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">),</span>
-</span><span id="line-214">            <span class="n">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">),</span>
-</span><span id="line-215">        <span class="p">]</span>
-</span><span id="line-216">    <span class="p">)</span></div>
-
+</span><span id="line-211"><span class="k">def</span><span class="w"> </span><span class="nf">nearly_orthogonal_vectors</span><span class="p">(</span>
+</span><span id="line-212">    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">:</span> <span class="n">AngleUnits</span> <span class="o">=</span> <span class="s2">"cosine"</span>
+</span><span id="line-213"><span class="p">):</span>
+</span><span id="line-214"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-215"><span class="sd">    Estimates the min number of nearly orthogonal vectors that can fit in an</span>
+</span><span id="line-216"><span class="sd">    n-dimensional.</span>
 </span><span id="line-217">
-</span><span id="line-218">
+</span><span id="line-218"><span class="sd">    """</span>
+</span><span id="line-219">    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
+</span><span id="line-220">        <span class="p">[</span>
+</span><span id="line-221">            <span class="n">nearly_orthogonal_vectors_johnson_lindenstrauss</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">),</span>
+</span><span id="line-222">            <span class="n">nearly_orthogonal_vectors_equiangular</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon_unit</span><span class="p">),</span>
+</span><span id="line-223">        <span class="p">]</span>
+</span><span id="line-224">    <span class="p">)</span></div>
+
+</span><span id="line-225">
+</span><span id="line-226">
 <div class="viewcode-block" id="generate_random_unit_vectors">
 <a class="viewcode-back" href="../../_autosummary/idiom.high_dims.html#idiom.high_dims.generate_random_unit_vectors">[docs]</a>
-</span><span id="line-219"><span class="k">def</span><span class="w"> </span><span class="nf">generate_random_unit_vectors</span><span class="p">(</span><span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num_vectors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-</span><span id="line-220"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-221"><span class="sd">    Generates `num_vectors` random unit vectors in `dim`-dimensional space.</span>
-</span><span id="line-222">
-</span><span id="line-223"><span class="sd">    :param dim: Dimension of the space</span>
-</span><span id="line-224"><span class="sd">    :param num_vectors: Number of vectors to generate</span>
-</span><span id="line-225"><span class="sd">    :return: A (num_vectors, dim) numpy array of unit vectors</span>
-</span><span id="line-226">
-</span><span id="line-227"><span class="sd">    &gt;&gt;&gt; vectors = generate_random_unit_vectors(5, 3)</span>
-</span><span id="line-228"><span class="sd">    &gt;&gt;&gt; np.allclose(np.linalg.norm(vectors, axis=1), 1.0)</span>
-</span><span id="line-229"><span class="sd">    True</span>
-</span><span id="line-230"><span class="sd">    """</span>
-</span><span id="line-231">    <span class="n">vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_vectors</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
-</span><span id="line-232">    <span class="k">return</span> <span class="n">vectors</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-
-</span><span id="line-233">
+</span><span id="line-227"><span class="k">def</span><span class="w"> </span><span class="nf">generate_random_unit_vectors</span><span class="p">(</span><span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num_vectors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+</span><span id="line-228"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-229"><span class="sd">    Generates `num_vectors` random unit vectors in `dim`-dimensional space.</span>
+</span><span id="line-230">
+</span><span id="line-231"><span class="sd">    :param dim: Dimension of the space</span>
+</span><span id="line-232"><span class="sd">    :param num_vectors: Number of vectors to generate</span>
+</span><span id="line-233"><span class="sd">    :return: A (num_vectors, dim) numpy array of unit vectors</span>
 </span><span id="line-234">
+</span><span id="line-235"><span class="sd">    &gt;&gt;&gt; vectors = generate_random_unit_vectors(5, 3)</span>
+</span><span id="line-236"><span class="sd">    &gt;&gt;&gt; np.allclose(np.linalg.norm(vectors, axis=1), 1.0)</span>
+</span><span id="line-237"><span class="sd">    True</span>
+</span><span id="line-238"><span class="sd">    """</span>
+</span><span id="line-239">    <span class="n">vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_vectors</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span><span id="line-240">    <span class="k">return</span> <span class="n">vectors</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+</span><span id="line-241">
+</span><span id="line-242">
 <div class="viewcode-block" id="measure_pairwise_angles">
 <a class="viewcode-back" href="../../_autosummary/idiom.high_dims.html#idiom.high_dims.measure_pairwise_angles">[docs]</a>
-</span><span id="line-235"><span class="k">def</span><span class="w"> </span><span class="nf">measure_pairwise_angles</span><span class="p">(</span><span class="n">vectors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-</span><span id="line-236"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-237"><span class="sd">    Computes the pairwise angles (in degrees) between unit vectors.</span>
-</span><span id="line-238">
-</span><span id="line-239"><span class="sd">    :param vectors: A numpy array of shape (num_vectors, dim)</span>
-</span><span id="line-240"><span class="sd">    :return: A numpy array of pairwise angles in degrees</span>
-</span><span id="line-241">
-</span><span id="line-242"><span class="sd">    &gt;&gt;&gt; vecs = generate_random_unit_vectors(10, 5)</span>
-</span><span id="line-243"><span class="sd">    &gt;&gt;&gt; angles = measure_pairwise_angles(vecs)</span>
-</span><span id="line-244"><span class="sd">    &gt;&gt;&gt; bool((0 &lt;= angles).all() and (angles &lt;= 180).all())</span>
-</span><span id="line-245"><span class="sd">    True</span>
-</span><span id="line-246"><span class="sd">    """</span>
-</span><span id="line-247">    <span class="n">num_vectors</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="line-248">    <span class="n">angles</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-249">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_vectors</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
-</span><span id="line-250">        <span class="n">dot_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">vectors</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-</span><span id="line-251">        <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">dot_product</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-</span><span id="line-252">        <span class="n">angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-</span><span id="line-253">    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span></div>
+</span><span id="line-243"><span class="k">def</span><span class="w"> </span><span class="nf">measure_pairwise_angles</span><span class="p">(</span><span class="n">vectors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+</span><span id="line-244"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-245"><span class="sd">    Computes the pairwise angles (in degrees) between unit vectors.</span>
+</span><span id="line-246">
+</span><span id="line-247"><span class="sd">    :param vectors: A numpy array of shape (num_vectors, dim)</span>
+</span><span id="line-248"><span class="sd">    :return: A numpy array of pairwise angles in degrees</span>
+</span><span id="line-249">
+</span><span id="line-250"><span class="sd">    &gt;&gt;&gt; vecs = generate_random_unit_vectors(10, 5)</span>
+</span><span id="line-251"><span class="sd">    &gt;&gt;&gt; angles = measure_pairwise_angles(vecs)</span>
+</span><span id="line-252"><span class="sd">    &gt;&gt;&gt; bool((0 &lt;= angles).all() and (angles &lt;= 180).all())</span>
+</span><span id="line-253"><span class="sd">    True</span>
+</span><span id="line-254"><span class="sd">    """</span>
+</span><span id="line-255">    <span class="n">num_vectors</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="line-256">    <span class="n">angles</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-257">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_vectors</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+</span><span id="line-258">        <span class="n">dot_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">vectors</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+</span><span id="line-259">        <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">dot_product</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+</span><span id="line-260">        <span class="n">angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+</span><span id="line-261">    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span></div>
 
-</span><span id="line-254">
-</span><span id="line-255">
-</span><span id="line-256"><span class="c1"># -------------------------------------------------------------------------------------</span>
-</span><span id="line-257"><span class="c1"># High Dimensional Statistics</span>
-</span><span id="line-258">
-</span><span id="line-259"><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="line-260"><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">squareform</span>
-</span><span id="line-261">
 </span><span id="line-262">
-</span><span id="line-263"><span class="k">class</span><span class="w"> </span><span class="nc">HighDimStats</span><span class="p">:</span>
-</span><span id="line-264">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="line-265">        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span>
-</span><span id="line-266">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-267"><span class="w">        </span><span class="sd">"""</span>
-</span><span id="line-268"><span class="sd">        Initialize with data or generate random high-dimensional points.</span>
+</span><span id="line-263">
+</span><span id="line-264"><span class="c1"># -------------------------------------------------------------------------------------</span>
+</span><span id="line-265"><span class="c1"># High Dimensional Statistics</span>
+</span><span id="line-266">
+</span><span id="line-267"><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="line-268"><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">squareform</span>
 </span><span id="line-269">
-</span><span id="line-270"><span class="sd">        Args:</span>
-</span><span id="line-271"><span class="sd">            data (numpy.ndarray): (n_points, dim) dataset.</span>
-</span><span id="line-272"><span class="sd">            dim (int): Number of dimensions (if generating data).</span>
-</span><span id="line-273"><span class="sd">            n_points (int): Number of points (if generating data).</span>
-</span><span id="line-274"><span class="sd">            generator (callable): Random generator function (default: uniform).</span>
-</span><span id="line-275"><span class="sd">        """</span>
-</span><span id="line-276">        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-277">            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</span><span id="line-278">            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</span><span id="line-279">        <span class="k">else</span><span class="p">:</span>
-</span><span id="line-280">            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
-</span><span id="line-281">            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span>
-</span><span id="line-282">                <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
-</span><span id="line-283">            <span class="p">)</span>  <span class="c1"># Generate points in [-1,1]^dim</span>
-</span><span id="line-284">
-</span><span id="line-285">        <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="line-286">
-</span><span id="line-287">    <span class="k">def</span><span class="w"> </span><span class="nf">pairwise_distances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-288"><span class="w">        </span><span class="sd">"""Compute pairwise Euclidean distances and report mean and variance."""</span>
-</span><span id="line-289">        <span class="n">distances</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">"euclidean"</span><span class="p">)</span>
-</span><span id="line-290">        <span class="k">return</span> <span class="p">{</span><span class="s2">"mean_distance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">distances</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">distances</span><span class="p">)}</span>
-</span><span id="line-291">
-</span><span id="line-292">    <span class="k">def</span><span class="w"> </span><span class="nf">cosine_similarity_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-293"><span class="w">        </span><span class="sd">"""Compute cosine similarity between random pairs of points."""</span>
-</span><span id="line-294">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-295">        <span class="n">normalized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="n">norms</span>  <span class="c1"># Normalize to unit vectors</span>
-</span><span id="line-296">        <span class="n">cosine_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">normalized_data</span><span class="p">,</span> <span class="n">normalized_data</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-</span><span id="line-297">        <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Remove self-similarity (cosine=1)</span>
-</span><span id="line-298">        <span class="k">return</span> <span class="p">{</span><span class="s2">"mean_cosine"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">)}</span>
+</span><span id="line-270">
+</span><span id="line-271"><span class="k">class</span><span class="w"> </span><span class="nc">HighDimStats</span><span class="p">:</span>
+</span><span id="line-272">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="line-273">        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span>
+</span><span id="line-274">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-275"><span class="w">        </span><span class="sd">"""</span>
+</span><span id="line-276"><span class="sd">        Initialize with data or generate random high-dimensional points.</span>
+</span><span id="line-277">
+</span><span id="line-278"><span class="sd">        Args:</span>
+</span><span id="line-279"><span class="sd">            data (numpy.ndarray): (n_points, dim) dataset.</span>
+</span><span id="line-280"><span class="sd">            dim (int): Number of dimensions (if generating data).</span>
+</span><span id="line-281"><span class="sd">            n_points (int): Number of points (if generating data).</span>
+</span><span id="line-282"><span class="sd">            generator (callable): Random generator function (default: uniform).</span>
+</span><span id="line-283"><span class="sd">        """</span>
+</span><span id="line-284">        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-285">            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span id="line-286">            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="line-287">        <span class="k">else</span><span class="p">:</span>
+</span><span id="line-288">            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+</span><span id="line-289">            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span>
+</span><span id="line-290">                <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span><span id="line-291">            <span class="p">)</span>  <span class="c1"># Generate points in [-1,1]^dim</span>
+</span><span id="line-292">
+</span><span id="line-293">        <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="line-294">
+</span><span id="line-295">    <span class="k">def</span><span class="w"> </span><span class="nf">pairwise_distances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="line-296"><span class="w">        </span><span class="sd">"""Compute pairwise Euclidean distances and report mean and variance."""</span>
+</span><span id="line-297">        <span class="n">distances</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">"euclidean"</span><span class="p">)</span>
+</span><span id="line-298">        <span class="k">return</span> <span class="p">{</span><span class="s2">"mean_distance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">distances</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">distances</span><span class="p">)}</span>
 </span><span id="line-299">
-</span><span id="line-300">    <span class="k">def</span><span class="w"> </span><span class="nf">norm_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-301"><span class="w">        </span><span class="sd">"""Analyze the concentration of vector norms."""</span>
-</span><span id="line-302">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="line-303">        <span class="k">return</span> <span class="p">{</span><span class="s2">"mean_norm"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">norms</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">norms</span><span class="p">)}</span>
-</span><span id="line-304">
-</span><span id="line-305">    <span class="k">def</span><span class="w"> </span><span class="nf">hollow_ball_effect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-</span><span id="line-306"><span class="w">        </span><span class="sd">"""</span>
-</span><span id="line-307"><span class="sd">        Computes the fraction of points near the hypersphere's surface.</span>
-</span><span id="line-308">
-</span><span id="line-309"><span class="sd">        Args:</span>
-</span><span id="line-310"><span class="sd">            threshold (float): Fraction of the radius where "near surface" is defined.</span>
-</span><span id="line-311">
-</span><span id="line-312"><span class="sd">        Returns:</span>
-</span><span id="line-313"><span class="sd">            Fraction of points whose norm is in the top (1 - threshold) of the radius.</span>
-</span><span id="line-314"><span class="sd">        """</span>
-</span><span id="line-315">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="line-316">        <span class="n">radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">norms</span><span class="p">)</span>
-</span><span id="line-317">        <span class="n">near_surface</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norms</span> <span class="o">&gt;=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">radius</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span>
-</span><span id="line-318">        <span class="k">return</span> <span class="p">{</span><span class="s2">"fraction_near_surface"</span><span class="p">:</span> <span class="n">near_surface</span><span class="p">}</span>
+</span><span id="line-300">    <span class="k">def</span><span class="w"> </span><span class="nf">cosine_similarity_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="line-301"><span class="w">        </span><span class="sd">"""Compute cosine similarity between random pairs of points."""</span>
+</span><span id="line-302">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-303">        <span class="n">normalized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="n">norms</span>  <span class="c1"># Normalize to unit vectors</span>
+</span><span id="line-304">        <span class="n">cosine_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">normalized_data</span><span class="p">,</span> <span class="n">normalized_data</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</span><span id="line-305">        <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Remove self-similarity (cosine=1)</span>
+</span><span id="line-306">        <span class="k">return</span> <span class="p">{</span><span class="s2">"mean_cosine"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">)}</span>
+</span><span id="line-307">
+</span><span id="line-308">    <span class="k">def</span><span class="w"> </span><span class="nf">norm_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="line-309"><span class="w">        </span><span class="sd">"""Analyze the concentration of vector norms."""</span>
+</span><span id="line-310">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="line-311">        <span class="k">return</span> <span class="p">{</span><span class="s2">"mean_norm"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">norms</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">norms</span><span class="p">)}</span>
+</span><span id="line-312">
+</span><span id="line-313">    <span class="k">def</span><span class="w"> </span><span class="nf">hollow_ball_effect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+</span><span id="line-314"><span class="w">        </span><span class="sd">"""</span>
+</span><span id="line-315"><span class="sd">        Computes the fraction of points near the hypersphere's surface.</span>
+</span><span id="line-316">
+</span><span id="line-317"><span class="sd">        Args:</span>
+</span><span id="line-318"><span class="sd">            threshold (float): Fraction of the radius where "near surface" is defined.</span>
 </span><span id="line-319">
-</span><span id="line-320">    <span class="k">def</span><span class="w"> </span><span class="nf">corner_volume_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-</span><span id="line-321"><span class="w">        </span><span class="sd">"""</span>
-</span><span id="line-322"><span class="sd">        Computes the fraction of points near the corners of a hypercube.</span>
-</span><span id="line-323">
-</span><span id="line-324"><span class="sd">        Args:</span>
-</span><span id="line-325"><span class="sd">            threshold (float): Fraction of max distance from center to define "corner".</span>
-</span><span id="line-326">
-</span><span id="line-327"><span class="sd">        Returns:</span>
-</span><span id="line-328"><span class="sd">            Fraction of points that are near the corners.</span>
-</span><span id="line-329"><span class="sd">        """</span>
-</span><span id="line-330">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="line-331">        <span class="n">max_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>  <span class="c1"># Distance from center to a cube vertex</span>
-</span><span id="line-332">        <span class="n">near_corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norms</span> <span class="o">&gt;=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">max_norm</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span>
-</span><span id="line-333">        <span class="k">return</span> <span class="p">{</span><span class="s2">"fraction_near_corners"</span><span class="p">:</span> <span class="n">near_corners</span><span class="p">}</span>
+</span><span id="line-320"><span class="sd">        Returns:</span>
+</span><span id="line-321"><span class="sd">            Fraction of points whose norm is in the top (1 - threshold) of the radius.</span>
+</span><span id="line-322"><span class="sd">        """</span>
+</span><span id="line-323">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="line-324">        <span class="n">radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">norms</span><span class="p">)</span>
+</span><span id="line-325">        <span class="n">near_surface</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norms</span> <span class="o">&gt;=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">radius</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span>
+</span><span id="line-326">        <span class="k">return</span> <span class="p">{</span><span class="s2">"fraction_near_surface"</span><span class="p">:</span> <span class="n">near_surface</span><span class="p">}</span>
+</span><span id="line-327">
+</span><span id="line-328">    <span class="k">def</span><span class="w"> </span><span class="nf">corner_volume_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+</span><span id="line-329"><span class="w">        </span><span class="sd">"""</span>
+</span><span id="line-330"><span class="sd">        Computes the fraction of points near the corners of a hypercube.</span>
+</span><span id="line-331">
+</span><span id="line-332"><span class="sd">        Args:</span>
+</span><span id="line-333"><span class="sd">            threshold (float): Fraction of max distance from center to define "corner".</span>
 </span><span id="line-334">
-</span><span id="line-335">
-</span><span id="line-336"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-</span><span id="line-337">
-</span><span id="line-338">
+</span><span id="line-335"><span class="sd">        Returns:</span>
+</span><span id="line-336"><span class="sd">            Fraction of points that are near the corners.</span>
+</span><span id="line-337"><span class="sd">        """</span>
+</span><span id="line-338">        <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="line-339">        <span class="n">max_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>  <span class="c1"># Distance from center to a cube vertex</span>
+</span><span id="line-340">        <span class="n">near_corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norms</span> <span class="o">&gt;=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">max_norm</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_points</span>
+</span><span id="line-341">        <span class="k">return</span> <span class="p">{</span><span class="s2">"fraction_near_corners"</span><span class="p">:</span> <span class="n">near_corners</span><span class="p">}</span>
+</span><span id="line-342">
+</span><span id="line-343">
+</span><span id="line-344"><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</span><span id="line-345">
+</span><span id="line-346">
 <div class="viewcode-block" id="run_high_dim_experiment">
 <a class="viewcode-back" href="../../_autosummary/idiom.high_dims.html#idiom.high_dims.run_high_dim_experiment">[docs]</a>
-</span><span id="line-339"><span class="k">def</span><span class="w"> </span><span class="nf">run_high_dim_experiment</span><span class="p">(</span>
-</span><span id="line-340">    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span>
-</span><span id="line-341">    <span class="n">n_points</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
-</span><span id="line-342">    <span class="n">generator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">,</span>
-</span><span id="line-343"><span class="p">):</span>
-</span><span id="line-344"><span class="w">    </span><span class="sd">"""</span>
-</span><span id="line-345"><span class="sd">    Runs HighDimStats across multiple dimensions and returns results as a DataFrame.</span>
-</span><span id="line-346">
-</span><span id="line-347"><span class="sd">    Args:</span>
-</span><span id="line-348"><span class="sd">        dims (tuple): List of dimensions to evaluate.</span>
-</span><span id="line-349"><span class="sd">        n_points (int): Number of points per dimension.</span>
-</span><span id="line-350"><span class="sd">        generator (callable): Random generator function (default: uniform).</span>
-</span><span id="line-351">
-</span><span id="line-352"><span class="sd">    Returns:</span>
-</span><span id="line-353"><span class="sd">        pd.DataFrame: Contains statistics for each dimension.</span>
-</span><span id="line-354"><span class="sd">    """</span>
-</span><span id="line-355">    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-356">
-</span><span id="line-357">    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
-</span><span id="line-358">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running experiment for dimension: </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-359">        <span class="n">stats</span> <span class="o">=</span> <span class="n">HighDimStats</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">generator</span><span class="p">)</span>
-</span><span id="line-360">
-</span><span id="line-361">        <span class="c1"># Compute statistics</span>
-</span><span id="line-362">        <span class="n">distance_stats</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">pairwise_distances</span><span class="p">()</span>
-</span><span id="line-363">        <span class="n">cosine_stats</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">cosine_similarity_distribution</span><span class="p">()</span>
-</span><span id="line-364">        <span class="n">norm_stats</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm_distribution</span><span class="p">()</span>
-</span><span id="line-365">        <span class="n">hollow_ball</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">hollow_ball_effect</span><span class="p">()</span>
-</span><span id="line-366">        <span class="n">corner_volume</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">corner_volume_fraction</span><span class="p">()</span>
-</span><span id="line-367">
-</span><span id="line-368">        <span class="c1"># Collect all stats in a dict</span>
-</span><span id="line-369">        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-370">            <span class="p">{</span>
-</span><span id="line-371">                <span class="s2">"dimension"</span><span class="p">:</span> <span class="n">dim</span><span class="p">,</span>
-</span><span id="line-372">                <span class="s2">"mean_distance"</span><span class="p">:</span> <span class="n">distance_stats</span><span class="p">[</span><span class="s2">"mean_distance"</span><span class="p">],</span>
-</span><span id="line-373">                <span class="s2">"distance_variance"</span><span class="p">:</span> <span class="n">distance_stats</span><span class="p">[</span><span class="s2">"variance"</span><span class="p">],</span>
-</span><span id="line-374">                <span class="s2">"mean_cosine_similarity"</span><span class="p">:</span> <span class="n">cosine_stats</span><span class="p">[</span><span class="s2">"mean_cosine"</span><span class="p">],</span>
-</span><span id="line-375">                <span class="s2">"cosine_similarity_variance"</span><span class="p">:</span> <span class="n">cosine_stats</span><span class="p">[</span><span class="s2">"variance"</span><span class="p">],</span>
-</span><span id="line-376">                <span class="s2">"mean_norm"</span><span class="p">:</span> <span class="n">norm_stats</span><span class="p">[</span><span class="s2">"mean_norm"</span><span class="p">],</span>
-</span><span id="line-377">                <span class="s2">"norm_variance"</span><span class="p">:</span> <span class="n">norm_stats</span><span class="p">[</span><span class="s2">"variance"</span><span class="p">],</span>
-</span><span id="line-378">                <span class="s2">"fraction_near_surface"</span><span class="p">:</span> <span class="n">hollow_ball</span><span class="p">[</span><span class="s2">"fraction_near_surface"</span><span class="p">],</span>
-</span><span id="line-379">                <span class="s2">"fraction_near_corners"</span><span class="p">:</span> <span class="n">corner_volume</span><span class="p">[</span><span class="s2">"fraction_near_corners"</span><span class="p">],</span>
-</span><span id="line-380">            <span class="p">}</span>
-</span><span id="line-381">        <span class="p">)</span>
-</span><span id="line-382">
-</span><span id="line-383">    <span class="c1"># Convert results to DataFrame</span>
-</span><span id="line-384">    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-</span><span id="line-385">    <span class="k">return</span> <span class="n">df</span></div>
+</span><span id="line-347"><span class="k">def</span><span class="w"> </span><span class="nf">run_high_dim_experiment</span><span class="p">(</span>
+</span><span id="line-348">    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span>
+</span><span id="line-349">    <span class="n">n_points</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+</span><span id="line-350">    <span class="n">generator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">,</span>
+</span><span id="line-351"><span class="p">):</span>
+</span><span id="line-352"><span class="w">    </span><span class="sd">"""</span>
+</span><span id="line-353"><span class="sd">    Runs HighDimStats across multiple dimensions and returns results as a DataFrame.</span>
+</span><span id="line-354">
+</span><span id="line-355"><span class="sd">    Args:</span>
+</span><span id="line-356"><span class="sd">        dims (tuple): List of dimensions to evaluate.</span>
+</span><span id="line-357"><span class="sd">        n_points (int): Number of points per dimension.</span>
+</span><span id="line-358"><span class="sd">        generator (callable): Random generator function (default: uniform).</span>
+</span><span id="line-359">
+</span><span id="line-360"><span class="sd">    Returns:</span>
+</span><span id="line-361"><span class="sd">        pd.DataFrame: Contains statistics for each dimension.</span>
+</span><span id="line-362"><span class="sd">    """</span>
+</span><span id="line-363">    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-364">
+</span><span id="line-365">    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+</span><span id="line-366">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running experiment for dimension: </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-367">        <span class="n">stats</span> <span class="o">=</span> <span class="n">HighDimStats</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="n">n_points</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">generator</span><span class="p">)</span>
+</span><span id="line-368">
+</span><span id="line-369">        <span class="c1"># Compute statistics</span>
+</span><span id="line-370">        <span class="n">distance_stats</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">pairwise_distances</span><span class="p">()</span>
+</span><span id="line-371">        <span class="n">cosine_stats</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">cosine_similarity_distribution</span><span class="p">()</span>
+</span><span id="line-372">        <span class="n">norm_stats</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm_distribution</span><span class="p">()</span>
+</span><span id="line-373">        <span class="n">hollow_ball</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">hollow_ball_effect</span><span class="p">()</span>
+</span><span id="line-374">        <span class="n">corner_volume</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">corner_volume_fraction</span><span class="p">()</span>
+</span><span id="line-375">
+</span><span id="line-376">        <span class="c1"># Collect all stats in a dict</span>
+</span><span id="line-377">        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-378">            <span class="p">{</span>
+</span><span id="line-379">                <span class="s2">"dimension"</span><span class="p">:</span> <span class="n">dim</span><span class="p">,</span>
+</span><span id="line-380">                <span class="s2">"mean_distance"</span><span class="p">:</span> <span class="n">distance_stats</span><span class="p">[</span><span class="s2">"mean_distance"</span><span class="p">],</span>
+</span><span id="line-381">                <span class="s2">"distance_variance"</span><span class="p">:</span> <span class="n">distance_stats</span><span class="p">[</span><span class="s2">"variance"</span><span class="p">],</span>
+</span><span id="line-382">                <span class="s2">"mean_cosine_similarity"</span><span class="p">:</span> <span class="n">cosine_stats</span><span class="p">[</span><span class="s2">"mean_cosine"</span><span class="p">],</span>
+</span><span id="line-383">                <span class="s2">"cosine_similarity_variance"</span><span class="p">:</span> <span class="n">cosine_stats</span><span class="p">[</span><span class="s2">"variance"</span><span class="p">],</span>
+</span><span id="line-384">                <span class="s2">"mean_norm"</span><span class="p">:</span> <span class="n">norm_stats</span><span class="p">[</span><span class="s2">"mean_norm"</span><span class="p">],</span>
+</span><span id="line-385">                <span class="s2">"norm_variance"</span><span class="p">:</span> <span class="n">norm_stats</span><span class="p">[</span><span class="s2">"variance"</span><span class="p">],</span>
+</span><span id="line-386">                <span class="s2">"fraction_near_surface"</span><span class="p">:</span> <span class="n">hollow_ball</span><span class="p">[</span><span class="s2">"fraction_near_surface"</span><span class="p">],</span>
+</span><span id="line-387">                <span class="s2">"fraction_near_corners"</span><span class="p">:</span> <span class="n">corner_volume</span><span class="p">[</span><span class="s2">"fraction_near_corners"</span><span class="p">],</span>
+</span><span id="line-388">            <span class="p">}</span>
+</span><span id="line-389">        <span class="p">)</span>
+</span><span id="line-390">
+</span><span id="line-391">    <span class="c1"># Convert results to DataFrame</span>
+</span><span id="line-392">    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</span><span id="line-393">    <span class="k">return</span> <span class="n">df</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -589,7 +597,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../../_static/documentation_options.js?v=22607128"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

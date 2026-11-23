@@ -1,4 +1,4 @@
-> built 2026-11-22 23:11 UTC from b20a0cd (master) · idiom 0.1.7. Details: build_info.json
+> built 2026-11-23 07:29 UTC from 1bc8e31 (master) · idiom 0.1.8. Details: build_info.json
 
 # index.html.md
 
@@ -224,22 +224,12 @@ Estimates a (provable) lower bound for the maximum number N(ε, n) of unit vecto
 Euclidean space that can be chosen so that every pair of distinct vectors has an inner product (cosine
 of the angle between them) bounded by ε, i.e.
 
-> ```
-> |v_i · v_j|
-> ```
-
->  <= epsilon,   for all i ≠ j.
+> `|v_i · v_j| <= epsilon`,   for all i ≠ j.
 
 Special cases:
 
 > - If epsilon = 0, the vectors must be exactly orthogonal, so the maximum is exactly n.
-> - If epsilon >= 1, every pair of unit vectors trivially satisfies 
-
->   ```
->   |v_i · v_j|
->   ```
-
->    ≤ 1, so one may
+> - If epsilon >= 1, every pair of unit vectors trivially satisfies `|v_i · v_j| ≤ 1`, so one may
 >   pack infinitely many such vectors.
 
 For 0 < epsilon < 1, one standard (Johnson–Lindenstrauss) argument shows one can pack roughly
@@ -274,18 +264,22 @@ This is an asymptotic (existential) lower bound and should be considered a heuri
 * **Returns:**
   An estimate for the maximum number of nearly orthogonal unit vectors.
 
-# >>> nearly_orthogonal_vectors_equiangular(100, 0.1)
+Examples (not run as doctests; the numbers are unverified):
+
+```python
+nearly_orthogonal_vectors_equiangular(100, 0.1)
 # 100
-# >>> nearly_orthogonal_vectors_equiangular(1000, 0.1)
+nearly_orthogonal_vectors_equiangular(1000, 0.1)
 # 1000
-# >>> nearly_orthogonal_vectors_equiangular(10000, 0.1)
+nearly_orthogonal_vectors_equiangular(10000, 0.1)
 # 5184705528587109793792
 
 # With different epsilon units:
 
-# >>> nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit=’degrees’)
+nearly_orthogonal_vectors_equiangular(100000, 0, epsilon_unit='degrees')
 # 100000
-# >>> nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit=’degrees’)
+nearly_orthogonal_vectors_equiangular(1000, 5, epsilon_unit='degrees')
+```
 
 ### idiom.high_dims.nearly_orthogonal_vectors_johnson_lindenstrauss(n, epsilon=0.01, epsilon_unit='cosine')
 
@@ -303,12 +297,16 @@ See [https://en.wikipedia.org/wiki/Johnson%E2%80%93Lindenstrauss_lemma#Statement
 * **Returns:**
   Estimated number of nearly orthogonal vectors
 
-# >>> nearly_orthogonal_vectors_johnson_lindenstrauss(100, 0.1)
+Examples (not run as doctests; the numbers are unverified):
+
+```python
+nearly_orthogonal_vectors_johnson_lindenstrauss(100, 0.1)
 # 100
-# >>> nearly_orthogonal_vectors_johnson_lindenstrauss(1000, 0.1)
+nearly_orthogonal_vectors_johnson_lindenstrauss(1000, 0.1)
 # 1484
-# >>> nearly_orthogonal_vectors_johnson_lindenstrauss(10000, 0.1)
+nearly_orthogonal_vectors_johnson_lindenstrauss(10000, 0.1)
 # 51847055285871095840768
+```
 
 ### idiom.high_dims.run_high_dim_experiment(dims=(2, 3, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 3000), n_points=5000, generator=<bound method RandomState.uniform of RandomState(MT19937)>)
 
@@ -573,18 +571,16 @@ Twice faster than using FilesOfZip and pandas.read_csv
 
 # About this build
 
-This documentation was built on **2026-11-22 23:11 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/b20a0cd0936c6425d2e33cebab822d8fdb71a79b"><code>b20a0cd</code></a> on branch <code>master</code>, for **idiom 0.1.7** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-23 07:29 UTC** from commit <a href="https://github.com/thorwhalen/idiom/commit/1bc8e313b3e6f2602e7c332732207d2ff85ab679"><code>1bc8e31</code></a> on branch <code>master</code>, for **idiom 0.1.8** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.1.7) is behind the latest release on PyPI (0.1.8): `pip install idiom` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/b20a0cd0936c6425d2e33cebab822d8fdb71a79b"><code>b20a0cd0936c6425d2e33cebab822d8fdb71a79b</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/idiom/commit/1bc8e313b3e6f2602e7c332732207d2ff85ab679"><code>1bc8e313b3e6f2602e7c332732207d2ff85ab679</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -595,15 +591,15 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/idiom</code>                                                              |
-| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45081729259">45081729259</a>     |
+| Run          | <a href="https://github.com/thorwhalen/idiom/actions/runs/45131274018">45131274018</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>b20a0cd0936c6425d2e33cebab822d8fdb71a79b</code> (in the history of the built commit) |
+| Event commit | <code>1bc8e313b3e6f2602e7c332732207d2ff85ab679</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.23  |
+| epythet  | 0.2.24  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -622,14 +618,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/idiom/0.1.8/">0.1.8</a>, newer than the documented version (0.1.7).
+Latest release: <a href="https://pypi.org/project/idiom/0.1.8/">0.1.8</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/idiom && cd idiom
-git checkout b20a0cd0936c6425d2e33cebab822d8fdb71a79b
-pip install "epythet==0.2.23"
+git checkout 1bc8e313b3e6f2602e7c332732207d2ff85ab679
+pip install "epythet==0.2.24"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
